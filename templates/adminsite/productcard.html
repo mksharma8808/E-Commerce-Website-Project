@@ -1,0 +1,60 @@
+{% extends "adminsite/index.html" %}
+
+{% block adminpanel %}
+<div class="pagetitle">
+    <h1>{{prods.name|title}}</h1>
+    <nav style="--bs-breadcrumb-divider: '>';">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">
+                    <i class="bi bi-house-door"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Admin Login</li>
+            <li class="breadcrumb-item active">view product</li>
+            <li class="breadcrumb-item active">view</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="container">
+
+    <section class="min-vh-100 flex-column align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-6 align-items-center justify-content-center">
+                    <!-- Card with an image on top -->
+                    <div>
+                        <center>
+                            <a href="{{prods.image.url}}">
+                                <img src="{{prods.image.url}}"
+                                    style="height: 240px; width:200px;"
+                                    alt="...">
+                            </a>
+                        </center>
+                    </div>
+                    <center>
+                        <div class="card col-lg-6 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Name :
+                                    {{prods.name|title}}</h5>
+                                <p class="card-text">Description :
+                                    {{prods.des|title}}</p>
+                                <div class="d-flex justify-content-around">
+                                    <a href="/admin/viewproduct/edit/{{prods.id}}"
+                                        class="btn btn-outline-info btn-sm">Edit</a>
+                                    <a href="/admin/viewproduct/delete/{{prods.id}}"
+                                        class="btn btn-outline-danger btn-sm">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    {% endblock adminpanel %}

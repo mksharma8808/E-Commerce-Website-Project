@@ -1,0 +1,187 @@
+{% load static %}
+{% load my_filter %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Dashboard - CMS Website</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Nunito|Poppins" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <!-- External CSS for Responsiveness -->
+    <style>
+        /* Responsive Adjustments */
+        .image-container {
+            overflow: hidden;
+        }
+
+        .card-img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 40vh;
+            object-fit: cover;
+        }
+
+        .image-container:hover .card-img {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        /* Responsive Navigation */
+        .dropdown-menu {
+            background-color: #f8f8f8;
+        }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+        /* Responsive grid for product cards */
+        @media (max-width: 768px) {
+            .col-xl-6 {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .breadcrumb {
+                font-size: 0.8rem;
+            }
+
+            .dropdown-toggle {
+                font-size: 0.9rem;
+            }
+
+            .pagetitle {
+                font-size: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Existing JavaScript functionalities (make sure they work across different screen sizes)
+        // ...
+    </script>
+</head>
+
+<body>
+    <!-- Responsive Header -->
+    <header id="header" class="header fixed-top d-flex align-items-center"
+        style="background-color:#f8f8f8; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a href="#" class="logo d-flex align-items-center">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Logo" style="height: 30px; margin-right: 10px;">
+                <span class="d-none d-lg-block" style="font-size: 1.2rem; font-weight: bold; color: #333;">CMS WEBSITE</span>
+            </a>
+
+            <!-- Responsive Navbar -->
+            <nav class="navbar navbar-expand-lg">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="createDropdown"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="createDropdown" id="myDropdown">
+                                {% for cat in category %}
+                                <li>
+                                    <form id="myForm" action="{% url 'filter' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ cat.id }}" name="id">
+                                        <button type="submit" class="dropdown-item">{{ cat.name|title }}</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <!-- More dropdowns for Price and Company -->
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <a href="/viewcart/" class="btn btn-success me-2">
+                            <i class="bi bi-cart4 fs-5 text-white"></i>
+                            <!-- Add cart count badge here if needed -->
+                        </a>
+                        <a href="/login/" class="btn btn-outline-secondary me-2">Log in</a>
+                        <a href="/signup/" class="btn btn-outline-secondary">Sign up</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    </header>
+
+    <!-- Responsive Main Content -->
+    <main id="main" class="main container-fluid">
+        {% block content %}
+        <div class="pagetitle">
+            <nav style="--bs-breadcrumb-divider: '•';">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item active">All Category</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section">
+            <div class="row">
+                {% for p in prods %}
+                <div class="col-xl-6 col-md-6 col-sm-12 mb-4">
+                    <div class="card">
+                        <div class="image-container">
+                            <img src="{{ p.image.url }}" class="card-img img-fluid" alt="{{ p.name }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bolder">{{ p.name|title }}</h5>
+                            <p class="card-text text-secondary">{{ p.des|title }}</p>
+                            <p class="card-text fw-bolder">{{ p.price|Currency }}</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <!-- Add to Cart and View Details Buttons -->
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endblock content %}
+    </main>
+</body>
+
+</html>

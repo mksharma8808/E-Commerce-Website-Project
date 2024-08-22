@@ -1,0 +1,151 @@
+{% extends "usersite/customerindex.html" %}
+{% load static %}
+{% load my_filter %}
+
+
+{% block page %}
+        <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        } */
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+        .form-container h1 {
+            font-size: 24px;
+            margin-bottom: 0.5rem;
+        }
+        .form-container p {
+            margin-bottom: 1.5rem;
+            color: #6c757d;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #6c757d;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/%3E%3C/svg%3E') no-repeat right 0.75rem center/16px 16px;
+        }
+        .form-group .half-width {
+            display: inline-block;
+            width: calc(50% - 10px);
+        }
+        .form-group .half-width:last-child {
+            margin-left: 20px;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #218838;
+        }
+        .email-box {
+            display: flex;
+
+        }
+    </style>
+    <div class="row justify-content-center">
+        <div class="form-container justify-content-center">
+            <h1>Mailing Address</h1>
+            <p>To update your E-commerce list we need you to fill out this form</p>
+            <form action="/profile/viewcart/address/updateaddress/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <select id="title" name="title" required>
+                        <option value="{{address.cname|TitleName}}">{{address.cname|TitleName|title}}</option>
+                        <option value="mr">Mr.</option>
+                        <option value="mrs">Mrs.</option>
+                        <option value="ms">Ms.</option>
+                        <option value="dr">Dr.</option>
+                    </select>
+                </div>
+                <div class="form-group email-box">
+                    <div class="half-width">
+                        <label for="first-name">Name</label>
+                        <!-- <div class="inline-box"> -->
+                        <input type="text" id="first-name" name="first-name"
+                            value="{{address.cname|FirstName}}" required>
+                    </div>
+                    <div class="half-width">
+                        <label for="last-name">...</label>
+                        <input type="text" id="last-name" name="last-name"
+                            value="{{address.cname|LastName}}" required>
+                    </div>
+                </div>
+
+                <!-- <div class="form-group"> -->
+                <div class="form-group">
+                    <!-- <div class="half-width">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email"
+                            placeholder="ex: myname@example.com" required>
+                    </div> -->
+
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" 
+                            value="{{address.phone}}" required maxlength="10">
+                    
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address"
+                        value="{{address.address}}" required>
+                    <!-- <input type="text" id="address2" name="address2"
+                        placeholder="Street Address Line 2"> -->
+                </div>
+
+                <div class="form-group email-box">
+                    <div class="half-width">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" value="{{address.city}}" required>
+                    </div>
+                    <div class="half-width">
+                        <label for="state">State / Province</label>
+                        <input type="text" id="state" name="state" required value="{{address.state}}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postal">Postal / Zip Code</label>
+                    <input type="text" value="{{address.postal}}" id="postal" name="postal" required>
+                </div>
+
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock page %}

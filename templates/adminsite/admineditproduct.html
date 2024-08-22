@@ -1,0 +1,157 @@
+{% extends "adminsite/index.html" %}
+{% load my_filter %}
+
+{% block adminpanel %}
+    <div class="pagetitle">
+        <h1>Edit {{prods.name|title}}</h1>
+        <nav style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">
+                        <i class="bi bi-house-door"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active">Admin Login</li>
+                <li class="breadcrumb-item active">view product</li>
+                <li class="breadcrumb-item active">edit</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div class="container">
+
+        <section class="min-vh-100 flex-column align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div
+                        class="col-lg-7 flex-column align-items-center justify-content-center">
+
+                        <div class="card">
+
+                            <div class="card-body">
+
+                                <div class="pt-2 pb-4">
+                                    <h5
+                                        class="card-title text-center pb-1 fs-2">Edit Product</h5>
+                                    <p class="text-center small"></p>
+                                </div>
+
+                                <form class="row g-3 needs-validation" method="post" enctype="multipart/form-data" novalidate>
+                                    {% csrf_token %}
+                                    <div class="col-12">
+                                        <label for="yourName"
+                                            class="form-label">Product
+                                            Name</label>
+                                        <input type="text" name="name"
+                                            class="form-control" id="yourName" value="{{prods.name}}"
+                                            required>
+                                        <div class="invalid-feedback">Please,
+                                            enter product name!..</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPrice"
+                                            class="form-label">Product
+                                            Price</label>
+                                        <input type="text" name="price"
+                                            class="form-control" id="yourPrice" value="{{prods.price}}"
+                                            required>
+                                        <div class="invalid-feedback">Please
+                                            enter product price!..</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourQty"
+                                            class="form-label">Product
+                                            Quantity</label>
+                                        <input type="text" name="pqty"
+                                            class="form-control" id="yourQty" value="{{prods.item_qty}}"
+                                            required>
+                                        <div class="invalid-feedback">Please
+                                            enter product Quantity!..</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label
+                                            class="form-label">Category</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-select"
+                                                aria-label="Default select example"
+                                                name="select" required>
+                                                <option value="{{prods.Category_id}}">{{prods.Category}}</option>
+                                                {% for i in cats %}
+                                                    {% if i.name|CatName:prods.Category %}
+                                                    <option value="{{i.id}}">{{i.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">File
+                                            Upload</label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control"
+                                                type="file" id="formFile"
+                                                name="imag">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Season</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-select" aria-label="Default select example" name="season" required>
+                                                <option required>{{prods.season}}</option>
+                                                <option value="winter">winter</option>
+                                                <option value="summer">summer</option>
+                                                <option value="rainy season">rainy season</option>
+                                                <option value="retreating season">retreating season</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourDes"
+                                            class="form-label">Description</label>
+                                            <textarea class="form-control"
+                                                id="yourtextarea"
+                                                style="height: 100px" name="des">{{prods.des}}</textarea>
+                                            <div class="invalid-feedback">Please
+                                                enter description</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <p class="small mb-0"></p>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <p class="small mb-0"></p>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-info w-100"
+                                            type="submit">Update Product</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="credits">
+                            <!-- All the links in the footer should remain intact. -->
+                            <!-- You can delete the links only if you purchased the pro version. -->
+                            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                            Designed by <a
+                                href="https://bootstrapmade.com/">BootstrapMade</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+{% endblock adminpanel %}

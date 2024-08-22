@@ -1,0 +1,108 @@
+{% extends "adminsite/index.html" %}
+{% load my_filter %}
+{% block adminpanel %}
+
+<div class="pagetitle">
+    <h1>Category</h1>
+    <nav style="--bs-breadcrumb-divider: '>';">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href>
+                    <i class="bi bi-house-door"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Admin Login</li>
+            <li class="breadcrumb-item active">add category</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 flex-column justify-content-center">
+                    <div class="card mb-3">
+
+                        <div class="card-body">
+
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-1 fs-2">Add
+                                    Category</h5>
+                                <p class="text-center small"></p>
+                            </div>
+                            {% if messages %}
+                            {% for msg in messages %}
+                            <div class="alert alert-{{msg.tags}} alert-dismissible fade show" role="alert">
+                                <i class="bi bi-{{msg.tags|Icon}} me-1"></i>{{msg}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <label class="form-check-label"
+                                        for="rememberMe"></label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <form class="row g-1 needs-validation" method="post" novalidate>
+                                {% csrf_token %}
+                                <div class="col-12">
+                                    <label for="yourUsername"
+                                        class="form-label">Category Name</label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" name="cname"
+                                            class="form-control"
+                                            id="yourUsername" required>
+                                        <div class="invalid-feedback">Please
+                                            enter category name..</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="yourtextarea"
+                                        class="form-label">Description</label>
+                                    <textarea class="form-control"
+                                        id="yourtextarea"
+                                        style="height: 100px"
+                                        name="des" required></textarea>
+                                    <div class="invalid-feedback">Please enter
+                                        category des..</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label"
+                                            for="rememberMe"></label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-info w-100"
+                                        type="submit">Add Category</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div class="credits">
+                        <!-- All the links in the footer should remain intact. -->
+                        <!-- You can delete the links only if you purchased the pro version. -->
+                        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                        Designed by <a
+                            href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock adminpanel %}

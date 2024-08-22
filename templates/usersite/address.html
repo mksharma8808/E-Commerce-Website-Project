@@ -1,0 +1,167 @@
+{% extends "usersite/customerindex.html" %}
+{% load static %}
+{% load my_filter %}
+
+{% block page %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #139acf;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        .address-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            position: relative;
+        }
+        .address-card input[type="radio"] {
+            margin-right: 10px;
+        }
+        .address-card h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: normal;
+        }
+        .address-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .edit-link, .deliver-btn {
+            display: none;
+        }
+        .edit-link {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 12px;
+            color: #1565c0;
+            text-decoration: none;
+        }
+        .deliver-btn {
+            display: inline-block;
+            background-color: #ff5722;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-new-address {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .add-new-address a {
+            color: #1565c0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Delivery Address</div>
+        {% for add in address %}
+        <div class="address-card">
+            <input type="radio" name="address" id="address1" checked>
+            <label for="address1">
+                <h3>{{add.cname|FilterName|title}} <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> {{add.phone}}</h3>
+                <p>{{add.address}}, {{add.city}} District, {{add.state}} - {{add.postal}}</p>
+            </label>
+            <!-- <a href="/profile/viewcart/address/editaddress/" class="edit-link">Edit</a> -->
+            <!-- <a href="/profile/viewcart/checkout/" class="text-decoration-none"> -->
+                <form action="/profile/viewcart/address/editaddress/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{add.id}}" name="addid">
+                    <button type="submit" class="edit-link border-0 bg-white text-decoration-underline">Edit</button>
+                </form>
+                <form action="/profile/viewcart/checkout/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{add.id}}" name="addid">
+                    <button type="submit" class="deliver-btn">Deliver Here</button>
+                </form>
+            <!-- </a> -->
+        </div>
+
+        <!-- <div class="address-card">
+            <input type="radio" name="address" id="address2">
+            <label for="address2">
+                <h3>Naeem Nawaz <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> 6387918560</h3>
+                <p>Asharfabad turiya gang Bansal, Lucknow, Uttar Pradesh - 226003</p>
+            </label>
+            <a href="#" class="edit-link">Edit</a>
+            <button class="deliver-btn">Deliver Here</button>
+        </div>
+
+        <div class="address-card">
+            <input type="radio" name="address" id="address3">
+            <label for="address3">
+                <h3>Naeem Nawaz TFBL <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> 6387918560</h3>
+                <p>FLAT NO.82 PKT-7 SEC-2 ROHINI MIRZAHADIPURA, New Delhi, Delhi - 110086</p>
+            </label>
+            <a href="#" class="edit-link">Edit</a>
+            <button class="deliver-btn">Deliver Here</button>
+        </div> -->
+        {% endfor %}
+
+        <div class="add-new-address">
+            <a href="/profile/viewcart/address/newaddress/">+ Add a new address</a>
+        </div>
+    </div>
+
+    <script>
+        const addressCards = document.querySelectorAll('.address-card');
+
+        addressCards.forEach(card => {
+            card.querySelector('input[type="radio"]').addEventListener('change', function() {
+                // Hide all buttons initially
+                addressCards.forEach(c => {
+                    c.querySelector('.edit-link').style.display = 'none';
+                    c.querySelector('.deliver-btn').style.display = 'none';
+                });
+
+                // Show buttons for the selected card
+                card.querySelector('.edit-link').style.display = 'block';
+                card.querySelector('.deliver-btn').style.display = 'block';
+            });
+        });
+
+        // Trigger change event on page load to display buttons for the checked radio button
+        document.querySelector('input[type="radio"]:checked').dispatchEvent(new Event('change'));
+    </script>
+</body>
+{% endblock page %}
+
+{% block content %}
+    <div class="pagetitle">
+      <nav style="--bs-breadcrumb-divider: '•';">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/profile/">
+              <i class="bi bi-house-door"></i>
+            </a>
+          </li>
+          <li class="breadcrumb-item active">View cart</li>
+          <li class="breadcrumb-item active">Address</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock content %}

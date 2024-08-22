@@ -1,0 +1,93 @@
+{% extends "usersite/customerindex.html" %}
+{% load my_filter %}
+
+{% block page %}
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ensures the function runs when the DOM is fully loaded
+    displaynone1();
+  });
+
+  function displaynone1() {
+    document.querySelector('.sidebar').style.display = 'none';
+    document.querySelector('.main').style.marginLeft = '0px';
+    document.querySelector('#footer').style.marginLeft = '0px';
+  }
+</script> -->
+
+{% comment %} {% if messages %}
+  {% for msg in messages %}
+    <div class="alert text-center alert-{{ msg.tags }}">
+      <i class="bi bi-{{ msg.tags|Icon }} me-1"></i>{{ msg }}
+    </div>
+  {% endfor %}
+{% else %} {% endcomment %}
+<div class="card">
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Product Price</th>
+          <th scope="col">Product Quantity</th>
+          <th scope="col">Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in pcart %}
+        <tr>
+          <th scope="row">{{ i|CheckId }}</th>
+          <td>{{ i|CheckName|title }}</td>
+          <td>{{ i|CheckPrice }}</td>
+          <td>{{ i|CheckQty:request.session.pcart }}</td>
+          <td>{{ i|Total:request.session.pcart }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+  
+  <!-- Subtotal, Discount, and Total Calculation -->
+  <div class="d-flex justify-content-lg-around " style="margin-left:36vw;">
+    <div class="">Sub-Total</div>
+    <div class="" style="margin-right: 1.8vw;">{{ pcart|Subtotal:request.session.pcart }}</div>
+  </div>
+  <div class="d-flex justify-content-lg-around" style="margin-left:36vw;">
+    <div class="">Discount(5%)</div>
+    <div class="" style="margin-right: 2.5vw;">{{ pcart|Discount:request.session.pcart }}</div>
+  </div>
+  <!-- <hr align="center"width="100%"> -->
+  <div class="d-flex justify-content-lg-around mt-2" style="margin-left:36vw;">
+    <div class="fw-bolder">TOTAL</div>
+    <div class="fw-bolder" style="margin-right: 1.5vw;">{{ pcart|TotalAmount:request.session.pcart }}</div>
+  </div>
+</div>
+{% endblock page %}
+
+{% block content %}
+  <div class="pagetitle">
+    <nav class="d-flex justify-content-lg-between" style="--bs-breadcrumb-divider: '•';">
+      <div>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/profile/">
+            <i class="bi bi-house-door"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item active">Profile</li>
+        <li class="breadcrumb-item active">View cart</li>
+        <li class="breadcrumb-item active">Check-out</li>
+      </ol>
+      </div>
+      <div>
+      <h4 style="margin-right: 2vw;" class="breadcrumb">
+        <a href="/profile/viewcart/checkout/invoice/">
+           Print
+        </a>
+      </h4>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
+{% endblock content %}

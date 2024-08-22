@@ -1,0 +1,121 @@
+{% extends "usersite/index.html" %}
+{% load static %}
+
+{% block page %}
+<div class="container">
+    <section class="min-vh-200 max-vw-200">
+        {% if msg %}
+        <div class="row">
+            <div class="col-lg-3">
+                <ul class="sidebar-nav">
+                    <li class="d-grid">
+                        <a href="/addcategory/" class="btn btn-dark">
+                            <i class="bi bi-folder"> </i><span>Add
+                                Category</span>
+                        </a>
+                    </li>
+                    <li class="d-grid mt-2">
+                        <a href="/addproduct/" class="btn btn-dark">
+                            <i class="bi bi-collection"> </i><span>Add
+                                Product</span>
+                        </a>
+                    </li>
+                    <li class="d-grid mt-2">
+                        <a href="/viewproduct/" class="btn btn-dark">
+                            <i class="bi bi-exclamation-triangle">
+                            </i><span>View Product</span>
+                        </a>
+                    </li>
+                    <li class="d-grid mt-2">
+                        <a href="/viewcustomer/" class="btn btn-dark">
+                            <i class="bi bi-person"> </i><span>View
+                                Customer</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                {% block adminpanel %}
+
+                {% endblock adminpanel %}
+            </div>
+        </div>        
+        {% else %}
+        <div class="row justify-content-center">
+            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
+
+                <div class="card mb-3">
+  
+                  <div class="card-body">
+  
+                    <div class="pt-4 pb-2">
+                      <h1 class="card-title text-center pb-6 fs-1"><img src="{% static 'assets/img/logo.png' %}" alt="" height="35px"> Admin Login</h1>
+                      <p class="text-center small">Enter your username & password to login</p>
+                    </div>
+
+                    <form class="row g-3 needs-validation" novalidate method="post">
+                        {% csrf_token %}
+  
+                      <div class="col-12">
+                        <label for="yourUsername" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                          <input type="text" name="username" class="form-control" id="yourUsername" required>
+                          <div class="invalid-feedback">Please enter your username.</div>
+                        </div>
+                      </div>
+  
+                      <div class="col-12">
+                        <label for="yourPassword" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="yourPassword" required>
+                        <div class="invalid-feedback">Please enter your password!</div>
+                      </div>
+  
+                      <div class="col-12">
+                        <button class="btn btn-info w-100" type="submit">Login</button>
+                      </div>
+
+                    </form>
+  
+                  </div>
+                </div>
+  
+                <div class="credits">
+                  <!-- All the links in the footer should remain intact. -->
+                  <!-- You can delete the links only if you purchased the pro version. -->
+                  <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                  <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                  Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+  
+              </div>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock page %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Login</h1>
+    <nav style="display: flex; justify-content:space-between;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">
+                    <i class="bi bi-house-door"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Login</li>
+            <!-- <li class="breadcrumb-item active">Login</li> -->
+            <li class="breadcrumb-item active">Admin Login</li>
+            {% if msg %}
+            <li class="breadcrumb-item active">Successfully</li>
+            {% endif %}
+        </ol>
+        {% if msg %}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/adminlogout/" style="font-size:20px">Logout</a></li>
+        </ol>
+        {% endif %}
+    </nav>
+</div>
+{% endblock content %}

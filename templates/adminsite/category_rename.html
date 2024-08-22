@@ -1,0 +1,93 @@
+{% extends "adminsite/index.html" %}
+{% load my_filter %}
+
+{% block adminpanel %}
+<div class="pagetitle">
+    <h1>Profile</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">Profile</li>
+        </ol>
+    </nav>
+</div>
+<section class="section profile">
+    <div class="row">
+        
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active text-info" data-bs-toggle="tab"
+                              data-bs-target="#profile-overview">Overview</button>
+                          </li>
+                    
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#profile-edit">Edit
+                                Category</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview"
+                        id="profile-overview">
+                        <h5 class="card-title text-dark">Category Details</h5>
+                          <div class="row">
+                            <div class="col-lg-3 col-md-4 label text-dark">Categoory Id : </div>
+                            <div class="col-lg-9 col-md-8 text-secondary">{{cats.id}}</div>
+                          </div>
+            
+                          <div class="row">
+                            <div class="col-lg-3 col-md-4 label text-dark">Category Name : </div>
+                            <div class="col-lg-9 col-md-8 text-secondary">{{cats.name}}</div>
+                          </div>
+                        </div>
+
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Enter Old Category Name</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="catName" type="text"
+                                            class="form-control" id="fullName"
+                                            value="">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Enter New Category Name</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="newcatName" type="text"
+                                            class="form-control" id="fullName"
+                                            value="">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit"
+                                        class="btn btn-primary">Change Save</button>
+                                </div>
+                            </form><!-- End Profile Edit Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock adminpanel %}
