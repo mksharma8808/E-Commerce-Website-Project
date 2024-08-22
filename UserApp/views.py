@@ -38,9 +38,6 @@ class Index(View):
         price1=request.session.get('price1')
         if price1:
             del request.session['price1']
-        # for k,v in request.session.items():
-        #     print(k,"=>",v)
-        # # comp={'boat','samsung'}
         data={'category':cats,'prods':prods,'pri':amt}
         return render(request,"usersite/index.html",data)
 
