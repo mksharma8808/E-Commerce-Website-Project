@@ -86,6 +86,17 @@
         transform: scale(1.1);
         cursor: pointer;
     }
+
+    .swal-wide {
+      width: 60% !important; /* Adjust the width as per your design */
+      max-width: 600px;
+  }
+  
+  .custom-confirm-button {
+      background-color: #28a745; /* Custom color for confirm button */
+      color: white;
+  }
+  
     
     </style>
 
@@ -140,12 +151,12 @@
             $(this).data('id', val);
     
             // Update the span text with the decremented value
-            $("#pro_qty").text(val);
-    
+            
             //console.log("Updated Product Quantity:", val); // Log the updated product quantity
-        } else {
+          } else {
             alert("Request failed!! Quantity must be at least 1");
-        }
+          }
+          $("#pro_qty").text(val);
     });
     
   
@@ -161,11 +172,11 @@
         // Update the data-id attribute with the new value
         $(this).data('id', val);
         // Update the span text with the incremented value
-        $("#pro_qty").text(val);
         console.log(val);
       } else {
         alert("Request failed!! Quantity Empty")
       }
+      $("#pro_qty").text(val);
   });
 
       $(document).on('click', '#addtocart', function(e) {
@@ -184,11 +195,13 @@
                     const product = response.data;
                     const productString = JSON.stringify(product).replace(/"/g, '&quot;');
                     Swal.fire({
-                        width: 300,
+                        
                         heightAuto: true,
                         html: `
-                            <div class="col-xl-6 justify-content-center" style="width:22vw;height:39vw;">
-                              <div class="card justify-content-center">
+                            <div class="d-flex justify-content-center align-items-center">
+
+                            <div class="col-lg-8">
+                              <div class="card">
                                   <div class="image-container">
                                       <img src="${product.img}" class="card-img" alt="${product.name}">
                                   </div>
@@ -209,12 +222,14 @@
                                   </div>
                               </div>
                             </div>
+                          </div>
                         `,
                         showCloseButton: true,
                         showConfirmButton: true,
                         confirmButtonText: 'success',
                         customClass: {
-                          confirmButton: 'custom-confirm-button'
+                          confirmButton: 'custom-confirm-button',
+                          popup: 'swal-wide'
                         },
                         showCancelButton: true,
                         cancelButtonColor: "#000",
@@ -385,62 +400,47 @@
 
       {% block page %}
       <!-- Slides with captions -->
-      <div id="carouselExampleCaptions" class="carousel slide pb-2"
-        data-bs-ride="carousel">
+      <div id="carouselExampleCaptions" class="carousel slide pb-2" data-bs-ride="carousel">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide-to="0" class="active" aria-current="true"
-            aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active" align="center">
-            <img src="{% static 'assets/img/slides-1.jpg' %}" height="400vh"
-              alt="...">
+            <img src="{% static 'assets/img/1.png' %}" width="100%"  alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>First slide label</h5>
-              <p>Some representative placeholder content for the first
-                slide.</p>
+              <p>Some representative placeholder content for the first slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
-            <img src="{% static 'assets/img/slides-2.jpg' %}" height="400vh"
-              alt="...">
+            <img src="{% static 'assets/img/2.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Second slide label</h5>
-              <p>Some representative placeholder content for the second
-                slide.</p>
+              <p>Some representative placeholder content for the second slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
-            <img src="{% static 'assets/img/slides-3.jpg' %}" height="400vh"
-              alt="...">
+            <img src="{% static 'assets/img/3.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Third slide label</h5>
-              <p>Some representative placeholder content for the third
-                slide.</p>
+              <p>Some representative placeholder content for the third slide.</p>
             </div>
           </div>
         </div>
 
-        <button class="carousel-control-prev" type="button"
-          data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
           <!-- <span class="carousel-control-prev-icon " aria-hidden="true"></span> -->
           <i class="ri-arrow-drop-left-line text-black fs-2"></i>
-          <span class="text-black fs-5"
-            style="background-color: none;">Previous</span>
+          <span class="text-black fs-5" style="background-color: none;">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button"
-          data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
           <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
           <!-- <span class="">Next</span> -->
-          <span class="text-black fs-5"
-            style="background-color: none;">Next</span>
+          <span class="text-black fs-5" style="background-color: none;">Next</span>
           <i class="ri-arrow-drop-right-line text-black fs-2"></i>
-
+          
         </button>
 
       </div><!-- End Slides with captions -->
@@ -448,7 +448,7 @@
       <section class="section">
         <div class="row align-items-top d-flex justify-content-around">
           {% for p in prods %}
-          <div class="col-xl-6" style="width:22vw">
+          <div class="col-lg-4 col-sm-12 col-md-6 col-xl-4">
             <div class="card">
               <div class="image-container">
                 <img src="{{p.image.url}}" class="card-img" alt="...">
@@ -474,8 +474,8 @@
                 <!-- <a href="/profile/viewdetails/{{p.id}}/"
                   class="btn btn-outline-secondary w-100">View Details</a> -->
                 {% if request.session.index|Button:p %}
-                <a class="btn btn-success w-100" href="/viewcart/">
-                  Go to Cart
+                <a  href="/viewcart/">
+                  <button class="btn btn-success w-100">Go to Cart </button>
                 </a>
                 {% else %}
                 <form method="post">
@@ -505,6 +505,8 @@
 
     <!-- ======= Footer ======= -->
     <!-- Footer content can be added here -->
+
+
 
     <!-- Vendor JS Files -->
     <script

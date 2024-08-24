@@ -46,6 +46,11 @@
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Bootstrap JS Bundle (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"
       rel="stylesheet">
@@ -188,8 +193,10 @@
                         width: 300,
                         heightAuto: true,
                         html: `
-                            <div class="col-xl-6 justify-content-center" style="width:22vw;height:39vw;">
-                              <div class="card justify-content-center">
+                            <div class="d-flex justify-content-center align-items-center">
+
+                            <div class="col-lg-8">
+                              <div class="card">
                                   <div class="image-container">
                                       <img src="${product.img}" class="card-img" alt="${product.name}">
                                   </div>
@@ -210,6 +217,7 @@
                                   </div>
                               </div>
                             </div>
+                          </div>
                         `,
                         showCloseButton: true,
                         showConfirmButton: true,
@@ -240,126 +248,244 @@
     
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+/* Base Styles */
+.custom-header {
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-container {
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.navbar-toggler {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Navigation Styles */
+.navigation {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-link {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.dropdown-menu {
+  min-width: 200px;
+}
+
+.cart-button {
+  padding: 5px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-weight: 500;
+}
+
+.cart-count {
+  font-weight: bold;
+  color: #fff;
+}
+
+.profile-link,
+.logout-link {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+  .navbar-toggler {
+      display: block;
+  }
+
+  .navigation {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+  }
+
+  .navigation.show {
+      display: flex;
+  }
+
+  .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .logo-section {
+      margin-bottom: 10px;
+  }
+
+  .action-buttons {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .custom-header {
+      padding: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar-nav {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  
+  .navbar-nav .dropdown-menu {
+      position: static;
+      float: none;
+  }
+}
+
+
+  </style>
+
+
+
   </head>
 
   <body>
     <!-- ======= Header ======= -->
 
     <header id="header" class="header fixed-top d-flex align-items-center"
-      style="background-color:#f8f8f8; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    style="background-color:#f8f8f8; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
 
-      <div class="d-flex align-items-center justify-content-between w-100">
-        <div class="d-flex align-items-center">
-          <a href="#" class="logo d-flex align-items-center">
-            <img src alt style="height: 30px; margin-right: 10px;">
-            <span class="d-none d-lg-block"
-              style="font-size: 1.2rem; font-weight: bold; color: #333;">E-COMMERCE
-              WEBSITE</span>
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div class="d-flex align-items-center">
+        <a href="#" class="logo d-flex align-items-center">
+          <img src alt style="height: 30px; margin-right: 10px;">
+          <span class="d-none d-lg-block"
+            style="font-size: 1.2rem; font-weight: bold; color: #333;">E-COMMERCE
+            WEBSITE</span>
+        </a>
+      </div><!-- End Logo -->
+
+      <nav class="d-flex align-items-center gap-4">
+        <div class="dropdown nav-item">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+            id="createDropdown" data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="color: #333; font-size: 1rem; font-weight: 500;"
+            onclick="myCategory();">
+            Category
           </a>
-        </div><!-- End Logo -->
+          <ul class="dropdown-menu" aria-labelledby="createDropdown"
+            id="myDropdown">
+            {% for cat in category %}
+            <li>
+              <form id="myForm" action="{% url 'userfilter' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{cat.id}}" name="id">
+                <button type="submit"
+                  class="dropdown-item">{{cat.name|title}}</button>
+              </form>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
 
-        <nav class="d-flex align-items-center gap-4">
-          <div class="dropdown nav-item">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-              id="createDropdown" data-bs-toggle="dropdown"
-              aria-expanded="false"
-              style="color: #333; font-size: 1rem; font-weight: 500;"
-              onclick="myCategory();">
-              Category
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="createDropdown"
-              id="myDropdown">
-              {% for cat in category %}
-              <li>
-                <form id="myForm" action="{% url 'userfilter' %}" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" value="{{cat.id}}" name="id">
-                  <button type="submit"
-                    class="dropdown-item">{{cat.name|title}}</button>
-                </form>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-
-          <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-              id="watchDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-              style="color: #333; font-size: 1rem; font-weight: 500;"
-              onclick="myPrice();">
-              Price
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="watchDropdown"
-              id="myPrice">
-              {% if pri %}
-              <li>
-                <form action="{% url 'userprice' %}" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="price"
-                    value="{{request.session.firstprice}}">
-                  <button type="submit"
-                    class="dropdown-item">{{0|Currency}}-{{pri.price__max|Currency}}</button>
-                </form>
-              </li>
-              <li>
-                <form action="{% url 'userprice' %}" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="price"
-                    value="{{request.session.secondprice}}">
-                  <button type="submit"
-                    class="dropdown-item">{{pri.price__max1|Currency}}-{{pri.price__max2|Currency}}</button>
-                </form>
-              </li>
-              <li>
-                <form action="{% url 'userprice' %}" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="price"
-                    value="{{request.session.thirdprice}}">
-                  <button type="submit"
-                    class="dropdown-item">{{pri.price__max3|Currency}}-Above</button>
-                </form>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-
-          <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-              id="demandDropdown" data-bs-toggle="dropdown"
-              aria-expanded="false"
-              style="color: #333; font-size: 1rem; font-weight: 500;"
-              onclick="myCompany();">
-              Company
-            </a>
-            <!-- <ul class="dropdown-menu" aria-labelledby="demandDropdown"
-              id="myCompany">
-              <li><a class="dropdown-item" href="#">Buy/Rent Movies</a></li>
-              <li><a class="dropdown-item" href="#">Subscription Plans</a></li>
-              <li><a class="dropdown-item" href="#">Exclusive Content</a></li>
-            </ul> -->
-          </div>
-        </nav>
-
-        <div class="d-flex align-items-center gap-3">
-          <a href="{% url 'userviewcart' %}" class="btn btn-success"
-            style="padding: 5px 15px; font-weight: 500;">
-            <div class="d-flex">
-              <i class="bi bi-cart4 fs-5 text-white"></i>
-              {% if request.session.pcart %}
-              <span
-                class=" text-white fw-bold">{{request.session.pcart|Counter}}
-              </span>
-              {% endif %}
-            </div>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+            id="watchDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+            style="color: #333; font-size: 1rem; font-weight: 500;"
+            onclick="myPrice();">
+            Price
           </a>
-          <a href="{% url 'details' %}" class="nav-link"
-            style="color: #333; font-size: 1rem; font-weight: 500;">Profile</a>
-          <a href="/logout/" class="nav-link"
-            style="color: #333; font-size: 1rem; font-weight: 500;">Log out</a>
-        </div><!-- End Action Buttons -->
-      </div><!-- End Container -->
+          <ul class="dropdown-menu" aria-labelledby="watchDropdown"
+            id="myPrice">
+            {% if pri %}
+            <li>
+              <form action="{% url 'userprice' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="price"
+                  value="{{request.session.firstprice}}">
+                <button type="submit"
+                  class="dropdown-item">{{0|Currency}}-{{pri.price__max|Currency}}</button>
+              </form>
+            </li>
+            <li>
+              <form action="{% url 'userprice' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="price"
+                  value="{{request.session.secondprice}}">
+                <button type="submit"
+                  class="dropdown-item">{{pri.price__max1|Currency}}-{{pri.price__max2|Currency}}</button>
+              </form>
+            </li>
+            <li>
+              <form action="{% url 'userprice' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="price"
+                  value="{{request.session.thirdprice}}">
+                <button type="submit"
+                  class="dropdown-item">{{pri.price__max3|Currency}}-Above</button>
+              </form>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
 
-    </header>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+            id="demandDropdown" data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="color: #333; font-size: 1rem; font-weight: 500;"
+            onclick="myCompany();">
+            Company
+          </a>
+          <!-- <ul class="dropdown-menu" aria-labelledby="demandDropdown"
+            id="myCompany">
+            <li><a class="dropdown-item" href="#">Buy/Rent Movies</a></li>
+            <li><a class="dropdown-item" href="#">Subscription Plans</a></li>
+            <li><a class="dropdown-item" href="#">Exclusive Content</a></li>
+          </ul> -->
+        </div>
+      </nav>
+
+      <div class="d-flex align-items-center gap-3">
+        <a href="{% url 'userviewcart' %}" class="btn btn-success"
+          style="padding: 5px 15px; font-weight: 500;">
+          <div class="d-flex">
+            <i class="bi bi-cart4 fs-5 text-white"></i>
+            {% if request.session.pcart %}
+            <span
+              class=" text-white fw-bold">{{request.session.pcart|Counter}}
+            </span>
+            {% endif %}
+          </div>
+        </a>
+        <a href="{% url 'details' %}" class="nav-link"
+          style="color: #333; font-size: 1rem; font-weight: 500;">Profile</a>
+        <a href="/logout/" class="nav-link"
+          style="color: #333; font-size: 1rem; font-weight: 500;">Log out</a>
+      </div><!-- End Action Buttons -->
+    </div><!-- End Container -->
+
+  </header>
+
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
@@ -396,21 +522,21 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active" align="center">
-            <img src="{% static 'assets/img/slides-1.jpg' %}"  height="400vh" alt="...">
+            <img src="{% static 'assets/img/1.png' %}" width="100%"  alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>First slide label</h5>
               <p>Some representative placeholder content for the first slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
-            <img src="{% static 'assets/img/slides-2.jpg' %}" height="400vh" alt="...">
+            <img src="{% static 'assets/img/2.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Second slide label</h5>
               <p>Some representative placeholder content for the second slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
-            <img src="{% static 'assets/img/slides-3.jpg' %}" height="400vh" alt="...">
+            <img src="{% static 'assets/img/3.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Third slide label</h5>
               <p>Some representative placeholder content for the third slide.</p>
@@ -436,10 +562,10 @@
       <section class="section">
         <div class="row align-items-top d-flex justify-content-around">
           {% for p in prods %}
-          <div class="col-xl-6" style="width:22vw">
+          <div class="col-lg-4  col-sm-12 col-md-6 col-xl-4" >
             <div class="card">
               <div class="image-container">
-                <img src="{{p.image.url}}" class="card-img" alt="...">
+                <img src="{{p.image.url}}" class="card-img img-fluid" alt="...">
               </div>
               <div class="card-body" id>
                 <h5 class="card-title fw-bolder">{{p.name|title}}</h5>
@@ -462,9 +588,10 @@
                 <!-- <a href="/profile/viewdetails/{{p.id}}/"
                   class="btn btn-outline-secondary w-100">View Details</a> -->
                 {% if request.session.pcart|Button:p %}
-                  <a class="btn btn-success w-100" href="{% url 'userviewcart' %}">
-                    Go to Cart
-                  </a>
+                  
+                <a  href="{% url 'userviewcart' %}">
+                    <button class="btn btn-success w-100">Go to Cart </button>
+                </a>
                 {% else %}
                 <form method="post">
                   {% csrf_token %}
@@ -499,6 +626,10 @@
       src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
     <script
       src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      
+      <script
+      src="{% static 'assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
     <script src="{% static 'assets/vendor/chart.js/chart.umd.js' %}"></script>
     <script src="{% static 'assets/vendor/echarts/echarts.min.js' %}"></script>
     <script src="{% static 'assets/vendor/quill/quill.min.js' %}"></script>
@@ -508,6 +639,20 @@
     <script
       src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+    <!-- Custom jQuery Script -->
+<script>
+  $(document).ready(function() {
+      $("#navbarToggleBtn").click(function() {
+          $("#navbarContent").toggleClass("show");
+      });
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  
+    
   </body>
 
 </html>
