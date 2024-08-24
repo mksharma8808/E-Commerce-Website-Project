@@ -468,11 +468,7 @@
                 </div>
               </div>
               <div class="card-footer d-flex justify-content-between gap-1">
-                <!-- <a href="/profile/addcart/{{p.id}}/"
-                  class="btn btn-success w-100"><i class="bi bi-cart4"></i> Add
-                  to Cart</a> -->
-                <!-- <a href="/profile/viewdetails/{{p.id}}/"
-                  class="btn btn-outline-secondary w-100">View Details</a> -->
+                
                 {% if request.session.index|Button:p %}
                 <a  href="/viewcart/">
                   <button class="btn btn-success w-100">Go to Cart </button>
