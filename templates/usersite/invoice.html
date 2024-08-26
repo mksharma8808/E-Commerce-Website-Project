@@ -3,87 +3,106 @@
 
 
 {% block page %}
+
 <style>
- .invoice-container {
-    max-width: 800px;
-    margin: auto;
+    .invoice-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .header1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* Make the flex container wrap */
+        margin-bottom: 20px;
+    }
+    .header1 h1 {
+        font-size: 24px;
+        color: #2f4f70;
+    }
+    .invoice-details {
+        margin: 20px 0;
+    }
+    .invoice-details p {
+        margin: 5px 0;
+    }
+    .bill-section {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap; /* Make the flex container wrap */
+    }
+    .bill-section div {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .bill-section div h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .table-responsive {
+        margin-bottom: 20px; /* Adds space below the table */
+    }
     
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-} 
-.header1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .table th, .table td {
+        text-align: center; /* Center-aligns text in table cells */
+        vertical-align: middle; /* Vertically centers text */
+    }
     
-}
-.header1 img {
-    width: 50px;
-}
-.header1 h1 {
-    font-size: 24px;
-    color: #2f4f70;
-}
-.invoice-details {
-    margin: 20px 0;
-}
-.invoice-details p {
-    margin: 5px 0;
-}
-.bill-section {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-.bill-section div {
-    width: 48%;
-}
-.bill-section div h3 {
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-table, th, td {
-    border: 1px solid #ddd;
-}
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-th {
-    background-color: #f4f4f4;
-}
-.total-section {
-    display: flex;
-    justify-content: flex-end;
-}
-.total-section div {
-    width: 200px;
-}
-.total-section div p {
-    margin: 5px 0;
-    text-align: right;
-}
-.total-section div p span {
-    display: inline-block;
-    width: 100px;
-}
-.total-section div h2 {
-    margin-top: 10px;
-    font-size: 24px;
-    color: #2f4f70;
-    text-align: right;
-}
+    .table th {
+        background-color: #f4f4f4; /* Consistent header background */
+        color: #2f4f70; /* Header text color */
+    }
+    
+    .table td {
+        padding: 10px; /* Padding for table cells */
+    }
+    
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #ddd; /* Border for cells */
+    }
+    
+    .total-section {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap; /* Make the flex container wrap */
+    }
+    .total-section div {
+        width: 100%;
+        max-width: 200px;
+    }
+    .total-section div p {
+        margin: 5px 0;
+        text-align: right;
+    }
+    .total-section div p span {
+        display: inline-block;
+        width: 100px;
+    }
+    .total-section div h2 {
+        margin-top: 10px;
+        font-size: 24px;
+        color: #2f4f70;
+        text-align: right;
+    }
+
+    @media (min-width: 768px) {
+        .bill-section div {
+            width: 48%;
+        }
+        .total-section div {
+            width: auto;
+        }
+    }
+
 
 </style>
-<!-- <div class="row justify-content-center"> -->
+
 <div class="invoice-container">
     <div class="header1">
         <div>
@@ -95,41 +114,47 @@ th {
             <h1>INVOICE</h1>
         </div>
     </div>
-    <!-- </div> -->
+
     <div class="bill-section">
         <div>
             <h3 class="fw-bolder">Bill from:</h3>
             <p>Nature E-Commerce</p>
-            <p>Azamgarh U.P. , Zip Code : 275101</p>
+            <p>Azamgarh U.P. , Zip Code: 275101</p>
             <p>+91 8808177980</p>
         </div>
         <div>
             <h3 class="fw-bolder">Bill to:</h3>
             <p>{{address.cname|title}}</p>
-            <p>{{address.address|title}} {{address.city|title}} {{address.state|title}}, Zip Code : {{address.postal}}</p>
+            <p>{{address.address|title}} {{address.city|title}} {{address.state|title}}, Zip Code: {{address.postal}}</p>
             <p>+91 {{address.phone}}</p>
         </div>
     </div>
 
-    <table>
-        <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Rate</th>
-            <th>Tax</th>
-            <th>Amount</th>
-        </tr>
-        {% for item in pcart %}
-        <tr>
-            <td>{{ item|CheckName|title }}</td>
-            <td>{{ item|CheckQty:request.session.pcart }}</td>
-            <td>{{ item|CheckPrice }}</td>
-            <td>0.00</td>
-            <td>{{ item|Total:request.session.pcart }}</td>
-        </tr>
-        {% endfor %}
-        
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Tax</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pcart %}
+                <tr>
+                    <td>{{ item|CheckName|title }}</td>
+                    <td>{{ item|CheckQty:request.session.pcart }}</td>
+                    <td>{{ item|CheckPrice }}</td>
+                    <td>0.00</td>
+                    <td>{{ item|Total:request.session.pcart }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 
     <p><strong>Terms & Conditions:</strong></p>
 
@@ -143,56 +168,82 @@ th {
         </div>
     </div>
 </div>
-<!-- </div> -->
+
+<!-- Include html2canvas and jsPDF libraries (use latest versions) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('downloadInvoice').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+
+            html2canvas(document.querySelector('.invoice-container')).then(canvas => {
+                const pdf = new jsPDF('p', 'pt', 'a4');
+
+                // Convert canvas to image
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = canvas.height * pdfWidth / canvas.width;
+
+                // Add image to PDF and save
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('invoice.pdf');
+            }).catch(error => {
+                console.error("Error generating PDF:", error);
+            });
+        });
+    });
+</script>
+
+
 {% endblock page %}
 
 {% block content %}
-<div class="pagetitle">
-    <nav class="d-flex justify-content-lg-between" style="--bs-breadcrumb-divider: '•';">
-      <div>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="/profile/">
-            <i class="bi bi-house-door"></i>
-          </a>
-        </li>
-        <li class="breadcrumb-item active">Profile</li>
-        <li class="breadcrumb-item active">View cart</li>
-        <li class="breadcrumb-item active">Check-out</li>
-        <li class="breadcrumb-item active">Invoice</li>
-      </ol>
-      </div>
-      <div>
-      <h4 style="margin-right: 2vw;" class="breadcrumb">
-        <form action="" method="post">
-            {% csrf_token %}
-            <button id="download" class="border-0"></a>Download</button>
-        </form>
-      </h4>
-      </div>
+
+  <div class="pagetitle">
+    <nav class="d-flex justify-content-between align-items-center" style="--bs-breadcrumb-divider: '•';">
+        <div>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/profile/">
+                        <i class="bi bi-house-door"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active">Profile</li>
+                <li class="breadcrumb-item active">View cart</li>
+                <li class="breadcrumb-item active">Check-out</li>
+                <li class="breadcrumb-item active">Invoice</li>
+            </ol>
+        </div>
+        <div class="d-lg-block"> <!-- Hide button on smaller screens -->
+            <form action="" method="post" class="d-inline">
+                {% csrf_token %}
+                <button id="send-to-mail" class="btn btn-primary border-0">Send Mail</button>
+            </form>
+            
+                <!-- Download button -->
+                <button id="downloadInvoice" class="btn btn-primary border-0">Download Invoice</button>
+            <!-- </form> -->
+        </div>
     </nav>
-  </div><!-- End Page Title -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script>
+</div><!-- End Page Title -->
+
+<style>
+    .pagetitle {
+        margin-bottom: 20px; /* Adds some space below the page title */
+    }
     
-    $(document).on('click','#download',function(event){
-        event.preventDefault();
-        alert("hh")
-        $.ajax({
-            type: 'POST',
-            url: '/profile/viewcart/checkout/invoice/download/',
-            data: {
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success: function(response) {
-                alert(response.message);
-            },
-            error: function(response) {
-                alert("Request Failed !!! " + response.message);
-            }
-        });
-    });
-  </script>
+    .breadcrumb {
+        padding: 0;
+        margin-bottom: 0; /* Removes default margin to ensure compact layout */
+    }
+    
+    #send-to-mail,#downloadInvoice {
+        padding: 5px 15px; /* Adds some padding to the button */
+        font-size: 14px; /* Adjust font size if needed */
+    }
+    
+</style>
+
 {% endblock content %}

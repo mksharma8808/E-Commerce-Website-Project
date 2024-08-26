@@ -132,9 +132,9 @@
         e.preventDefault();
     
         // Fetch the data-id and data-qty attributes from the clicked element
-        let val = parseInt($('#pro_qty').text());
+        let val = parseInt($('#stored_item').text());
         let productQty = parseInt($(this).data('qty')); // Use data-qty instead of data-product
-        let remainQty = parseInt($('#remain_qty').text());
+        let remainQty = parseInt($('#actual_item').text());
     
         //console.log("Product ID:", val); // Log the product ID
         //console.log("Product Quantity:", productQty); // Log the product quantity
@@ -142,32 +142,32 @@
         if (val > 1) {
             // Increment the remaining quantity displayed
             remainQty = remainQty + 1;
-            $("#remain_qty").text(remainQty);
-    
+            
             // Decrement the product quantity
             val = val - 1;
-    
+            
             // Update the data-id attribute with the new value
             $(this).data('id', val);
-    
+            
             // Update the span text with the decremented value
             
             //console.log("Updated Product Quantity:", val); // Log the updated product quantity
           } else {
             alert("Request failed!! Quantity must be at least 1");
           }
-          $("#pro_qty").text(val);
+          $("#actual_item").text(remainQty);
+          $("#stored_item").text(val);
     });
     
   
     $(document).on('click', "#increment", function(e) {
       e.preventDefault();
-      let val = parseInt($(this).data('id'));
-      let product_qty = $('#remain_qty').text();
+      // let val = parseInt($(this).data('id'));
+      let val = parseInt($('#stored_item').text());
+      let product_qty = $('#actual_item').text();
       if(parseInt(product_qty) > 0){
         qty = parseInt(product_qty);
         qty = qty - 1;
-        $("#remain_qty").text(qty);
         val = val + 1;
         // Update the data-id attribute with the new value
         $(this).data('id', val);
@@ -176,7 +176,8 @@
       } else {
         alert("Request failed!! Quantity Empty")
       }
-      $("#pro_qty").text(val);
+      $("#actual_item").text(qty);
+      $("#stored_item").text(val);
   });
 
       $(document).on('click', '#addtocart', function(e) {
@@ -208,13 +209,13 @@
                                   <div>
                                       <h5 class="card-title pt-0 fw-bolder">${product.name}</h5>
                                       <p class="text-secondary ">${product.des}</p>
-                                      <p class=" fw-bolder pt-0">Quantity: <span id="remain_qty">${product.qty} </span></p>
+                                      <p class=" fw-bolder pt-0">Quantity: <span id="actual_item">${product.qty} </span></p>
                                       <p class="pt-0 fw-bolder">Price: ₹${product.rate}</p>
                                       <div style="display: flex; justify-content: center; align-items: center;">
                                           <button type="submit" style="border: none; background: white;">
                                               <b class="bi bi-clipboard-minus fs-1 text-black" id="decrement" data-product="${product.qty}"></b>
                                           </button>
-                                          <span id="pro_qty">${product.item} </span>&nbsp;in cart
+                                          <span id="stored_item">${product.item} </span>&nbsp;in cart
                                           <button type="submit" style="border: none; background: white;">
                                               <b class="bi bi-clipboard-plus fs-1  text-black" id="increment" data-id="${product.item}" data-product="${productString}"></b>
                                           </button>
@@ -236,7 +237,7 @@
                     }).then((result) => {
                       
                         if (result.isConfirmed) {
-                           let newQty =  $("#pro_qty").text();
+                           let newQty =  $("#stored_item").text();
                            //console.log(newQty);
                            let url  =   '/add/?id=' + id + '&qty='+newQty;
 
@@ -458,9 +459,9 @@
                 <p class="card-text text-secondary">{{p.des|title}}</p>
                 <p class="card-text fw-bolder">few items :
                   {% if request.session.index %}
-
+                    {{p.id|Count_Item:request.session.index}}
                   {% else %}
-                  {{p.item_qty}}
+                    {{p.item_qty}}
                   {% endif %}
                 </p>
                 <div style="display:flex; justify-content:space-between;">

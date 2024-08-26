@@ -45,9 +45,9 @@ def add(request):
     if request.method=="GET":
         id = request.GET.get('id')
         qty = request.GET.get('qty')
-        index=request.session.get('index',{})
-        index[id]=qty
-        request.session['index']=index
+        index = request.session.get('index',{})
+        index[id] = qty
+        request.session['index'] = index
     return HttpResponseRedirect("/")
 
 # from django.http import HttpResponseRedirect
@@ -58,8 +58,8 @@ def customeradd(request):
         product_id = request.GET.get('id')
         qty = request.GET.get('qty')
 
-        print("Product ID:", product_id)
-        print("Quantity:", qty)
+        # print("Product ID:", product_id)
+        # print("Quantity:", qty)
 
         # Handle session cart
         pcart = request.session.get('pcart', {})
@@ -76,8 +76,8 @@ def update_customeradd(request):
         product_id = request.GET.get('id')
         qty = request.GET.get('qty')
 
-        print("Product ID:", product_id)
-        print("Quantity:", qty)
+        # print("Product ID:", product_id)
+        # print("Quantity:", qty)
 
         # Handle session cart
         pcart = request.session.get('pcart', {})
@@ -94,8 +94,8 @@ def update_add(request):
         product_id = request.GET.get('id')
         qty = request.GET.get('qty')
 
-        print("Product ID:", product_id)
-        print("Quantity:", qty)
+        # print("Product ID:", product_id)
+        # print("Quantity:", qty)
 
         # Handle session cart
         index = request.session.get('index', {})
@@ -165,10 +165,10 @@ class NewUser_verify_otp_view(View):
                 password = request.session.get('newuserpass')
                 username = request.session.get('newusername')
                 newemail = request.session.get('newemail')
-                message = "Your Username : "+username+" , Your Password : " + password 
-                # request.session['str_otp']=str(otp)
+                message = "Your Username : "+username+" , Your Password : " + password
                 from_email = settings.EMAIL_HOST_USER
                 recipient_list = [newemail]
+                
                 # send_mail(subject, message, from_email, recipient_list)
                 cobj = Customer(
                     name = username,
@@ -201,16 +201,6 @@ class Login_view(View):
                 if pwd == cobj.password:
                     if uname == cobj.email:
                         request.session['customer_instance'] = cobj.id
-                        # print("giood")
-                        # request.session['cid'] = cobj.id
-                        # index = request.session.get('index')
-                        # if index:
-                        #     request.session['pid'] = index
-                        #     request.session['pcart'] = index
-                        #     del request.session['index']
-                        # cat1 = request.session.get('cat1')
-                        # if cat1:
-                        #     del request.session['cat1']
                         otp=random.randint(100000,999999)
                         request.session['str_otp']=str(otp)
                         print(otp)
@@ -218,7 +208,7 @@ class Login_view(View):
                         message = f"Your OTP is {otp}" 
                         from_email = settings.EMAIL_HOST_USER
                         recipient_list = [uname]
-                        # print(otp)
+        
                         # send_mail(subject, message, from_email, recipient_list)
                         return JsonResponse({'status': 'success', 'redirect_url': '/login_verify_otp/', 'message': "OTP Send ! Please Check Your Registered Email-ID"})
                     else:
@@ -248,11 +238,6 @@ class Logout_view(View):
         
 class Login_verify_otp_view(View):
     def get(self,request):
-        # user = request.session.get('cuser')
-        # if user:
-        #     return HttpResponseRedirect('/profile/')
-        # if user:
-            # return HttpResponseRedirect('/login/')
         cats = Category.objects.all()
         return render(request,"usersite/loginVerify_otp.html",{'cats':cats})
     def post(self,request):
@@ -269,39 +254,13 @@ class Login_verify_otp_view(View):
                 request.session['pid'] = index
                 request.session['pcart'] = index
                 del request.session['index']
+            cat1 = request.session.get('cat1')
+            if cat1:
+                del request.session['cat1']
             return JsonResponse({'success': True, 'redirect_url': '/profile/', 'message': "Login Successfully"})
         else:
             return JsonResponse({'success': False, 'message': "OTP does not match"})
 
-# class Forget_password_view(View):
-#     def get(self,request):
-#         cats=Category.objects.all()
-#         return render(request,"usersite/forget.html",{'cats':cats})
-#     def post(self,request):
-#         try:
-#             #global str_email
-#             email=request.POST.get('email')
-#             request.session['em']=email
-#             # pwd=request.POST.get('password')
-#             # print(email)
-#             cobj=Customer.objects.get(email=email)
-#             print(cobj)
-#             if cobj:
-#                 global str_otp
-#                 otp=random.randint(100000,999999)
-#                 str_otp=str(otp)
-#                 subject="This message related to forget password"
-#                 message=f"OTP is {otp}"
-#                 from_email=settings.EMAIL_HOST_USER
-#                 recipient_list=[email]
-#                 send_mail(subject,message,from_email,recipient_list)
-#                 # print("hello")
-#                 return HttpResponseRedirect('/login/send_mail/')
-            
-#             return HttpResponseRedirect('/login/forget/')
-#         except:
-#             messages.warning(request,"Email ID Doesn't Exists!!!")
-#             return redirect('/login/forget/')
         
 # class Send_mail_view(View):
 #     def get(self,request):
@@ -324,7 +283,7 @@ class Forget_password_view(View):
         try:
             email = request.POST.get('email')
             request.session['em'] = email
-            cobj = Customer.objects.get(email=email)
+            cobj = Customer.objects.get(email = email)
             if cobj:
                 otp = random.randint(100000, 999999)
                 request.session['str_otp']=str(otp)
@@ -577,21 +536,21 @@ class Add_to_cart_view(View):
         
 class CustomerAdd_to_cart_view(View):
     def post(self,request):
-        addcart_id=request.POST.get('pid')
+        addcart_id = request.POST.get('pid')
         if addcart_id:
-            data=self.add_in_cart(request,addcart_id)
+            data = self.add_in_cart(request,addcart_id)
         return JsonResponse({'data':data})  
     def add_in_cart(self,request,product_id):
-        pcart=request.session.get('pcart',{})
-        pcart[product_id]=1
-        request.session['pcart']=pcart
-        prod = Product.objects.get(id=product_id)
+        pcart = request.session.get('pcart',{})
+        pcart[product_id] = 1
+        request.session['pcart'] = pcart
+        prod = Product.objects.get(id = product_id)
         # Serialize the product instance
         prod_data = {
             'img': prod.image.url,  # Ensure you have the url if image is an ImageField
             'name': prod.name,
             'des': prod.des,
-            'qty': prod.item_qty,
+            'qty': prod.item_qty - 1,
             'rate': prod.price,
             'item': 1
         }
@@ -762,6 +721,7 @@ class Viewcart_view(View):
     def get(self,request):
         cats=Category.objects.all()
         pcart=request.session.get('pcart')
+        print(pcart)
         if not pcart:
             # messages.warning(request,"No items in cart!!!")
             data={'cats':cats,'pcart':pcart,'msg':"congrates"}
@@ -770,45 +730,45 @@ class Viewcart_view(View):
         return render(request,"usersite/viewcart.html",data)
     
     
-class Customer_less_item_incart_view(View):
-    def post(self,request):
-        pid=request.POST.get('pid')
-        pcart=request.session.get('pcart')
-        item=int(pcart[pid])
-        if item==1:
-            # messages.warning(request,"Quantity must be 1 !!")
-            # index.pop(pid)
-            del pcart[pid]
-            request.session['pcart']=pcart
-            return JsonResponse({'success': False, 'message': 'This items deleted...','redirect_url': '/profile/viewcart/'}, status=200)
-        else:    
-            item=item-1
-            pcart[pid]=str(item)
-        request.session['pcart']=pcart
-        return JsonResponse({'success': True, 'redirect_url': '/profile/viewcart/'},status=200)
-    def get(self,request):
-        user=request.session.get('cuser')
-        if not user:
-            return HttpResponseRedirect('/login/')
-        return redirect('/profile/viewcart/')
+# class Customer_less_item_incart_view(View):
+#     def post(self,request):
+#         pid=request.POST.get('pid')
+#         pcart=request.session.get('pcart')
+#         item=int(pcart[pid])
+#         if item==1:
+#             # messages.warning(request,"Quantity must be 1 !!")
+#             # index.pop(pid)
+#             del pcart[pid]
+#             request.session['pcart']=pcart
+#             return JsonResponse({'success': False, 'message': 'This items deleted...','redirect_url': '/profile/viewcart/'}, status=200)
+#         else:    
+#             item=item-1
+#             pcart[pid]=str(item)
+#         request.session['pcart']=pcart
+#         return JsonResponse({'success': True, 'redirect_url': '/profile/viewcart/'},status=200)
+#     def get(self,request):
+#         user=request.session.get('cuser')
+#         if not user:
+#             return HttpResponseRedirect('/login/')
+#         return redirect('/profile/viewcart/')
 
-class Customer_add_item_incart(View):
-    def post(self,request):
-        pid=request.POST.get('pid')
-        pcart=request.session.get('pcart')
-        item=int(pcart[pid])
-        product_reference=Product.objects.get(id=pid)
-        if item<product_reference.item_qty:
-            item=item+1
-            pcart[pid]=str(item)
-            request.session['pcart']=pcart
-            return JsonResponse({'success': True, 'redirect_url': '/profile/viewcart/'}, status=200)
-        return JsonResponse({'success': False, 'message': 'Items Empty...'}, status=200)
-    def get(self,request):
-        user=request.session.get('cuser')
-        if not user:
-            return HttpResponseRedirect('/login/')
-        return redirect('/profile/viewcart/')
+# class Customer_add_item_incart(View):
+#     def post(self,request):
+#         pid=request.POST.get('pid')
+#         pcart=request.session.get('pcart')
+#         item=int(pcart[pid])
+#         product_reference=Product.objects.get(id=pid)
+#         if item<product_reference.item_qty:
+#             item=item+1
+#             pcart[pid]=str(item)
+#             request.session['pcart']=pcart
+#             return JsonResponse({'success': True, 'redirect_url': '/profile/viewcart/'}, status=200)
+#         return JsonResponse({'success': False, 'message': 'Items Empty...'}, status=200)
+#     def get(self,request):
+#         user=request.session.get('cuser')
+#         if not user:
+#             return HttpResponseRedirect('/login/')
+#         return redirect('/profile/viewcart/')
 
 
 class Customer_delete_item_incart(View):
@@ -844,40 +804,40 @@ class Viewcart_Index_view(View):
             data['msg']="empty_cart"
         return render(request,"usersite/indexcart.html",data)
 
-class Add_item_incart(View):
-    def post(self,request):
-        pid=request.POST.get('pid')
-        index=request.session.get('index')
-        item=int(index[pid])
-        product_reference=Product.objects.get(id=pid)
-        if item<product_reference.item_qty:
-            item=item+1
-            index[pid]=str(item)
-            request.session['index']=index
-            return JsonResponse({'success': True, 'redirect_url': '/viewcart/'}, status=200)
-        return JsonResponse({'success': False, 'message': 'Items Empty...'}, status=200)
-    def get(self,request):
-        return redirect('/viewcart/')
+# class Add_item_incart(View):
+#     def post(self,request):
+#         pid=request.POST.get('pid')
+#         index=request.session.get('index')
+#         item=int(index[pid])
+#         product_reference=Product.objects.get(id=pid)
+#         if item<product_reference.item_qty:
+#             item=item+1
+#             index[pid]=str(item)
+#             request.session['index']=index
+#             return JsonResponse({'success': True, 'redirect_url': '/viewcart/'}, status=200)
+#         return JsonResponse({'success': False, 'message': 'Items Empty...'}, status=200)
+#     def get(self,request):
+#         return redirect('/viewcart/')
 
 
-class Less_item_incart(View):
-    def post(self,request):
-        pid=request.POST.get('pid')
-        index=request.session.get('index')
-        item=int(index[pid])
-        if item==1:
-            # messages.warning(request,"Quantity must be 1 !!")
-            # index.pop(pid)
-            del index[pid]
-            request.session['index']=index
-            return JsonResponse({'success': False, 'message': 'This items deleted...','redirect_url': '/viewcart/'}, status=200)
-        else:    
-            item=item-1
-            index[pid]=str(item)
-        request.session['index']=index
-        return JsonResponse({'success': True, 'redirect_url': '/viewcart/'},status=200)
-    def get(self,request):
-        return redirect('/viewcart/')   
+# class Less_item_incart(View):
+#     def post(self,request):
+#         pid=request.POST.get('pid')
+#         index=request.session.get('index')
+#         item=int(index[pid])
+#         if item==1:
+#             # messages.warning(request,"Quantity must be 1 !!")
+#             # index.pop(pid)
+#             del index[pid]
+#             request.session['index']=index
+#             return JsonResponse({'success': False, 'message': 'This items deleted...','redirect_url': '/viewcart/'}, status=200)
+#         else:    
+#             item=item-1
+#             index[pid]=str(item)
+#         request.session['index']=index
+#         return JsonResponse({'success': True, 'redirect_url': '/viewcart/'},status=200)
+#     def get(self,request):
+#         return redirect('/viewcart/')   
 
 class Delete_item_incart(View):
     def post(self, request):
@@ -970,7 +930,7 @@ class DownloadInvoice_view(View):
             return JsonResponse({'error': False, 'message': str(msg)})
             # return HttpResponse(str(msg))
         
-    
+
 class Address_view(View):
     def get(self,request):
         user=request.session.get('cuser')

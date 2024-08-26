@@ -93,6 +93,7 @@
                     <input type="hidden" value="{{add.id}}" name="addid">
                     <button type="submit" class="edit-link border-0 bg-white text-decoration-underline">Edit</button>
                 </form>
+                
                 <form action="/profile/viewcart/checkout/" method="post">
                     {% csrf_token %}
                     <input type="hidden" value="{{add.id}}" name="addid">

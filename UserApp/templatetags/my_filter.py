@@ -290,4 +290,14 @@ def FirstName(name):
 @register.filter
 def LastName(name):
     name = name.split(" ")
-    return name[0]
+    return name[-1]
+
+@register.filter
+def Count_Item(id,index):
+    try:
+        obj = Product.objects.get(id = id)
+        item = index[str(id)]
+        value = int(obj.item_qty) - int(item)
+        return value
+    except:
+        return obj.item_qty 

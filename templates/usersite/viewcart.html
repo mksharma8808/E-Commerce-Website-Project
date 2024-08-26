@@ -19,11 +19,30 @@
 
 {% block page %}
 <style>
-  i:hover{
-    cursor: pointer;
+i:hover{
+  cursor: pointer;
+}
+
+/* Optional: Make table rows hoverable for better UX */
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Optional: Adjust table font size for small screens */
+@media (max-width: 576px) {
+  .table td, .table th {
+      font-size: 14px; /* Adjust font size as needed */
   }
+}
+
+/* Optional: Padding for table cells on small devices */
+.table td, .table th {
+  padding: 0.5rem;
+}
+
 </style>
 <script>
+
   $(document).on('click', '#delete_product', function() {
     let id = $(this).data('id');
 
@@ -66,59 +85,17 @@
     });
 });
 
-$(document).on('click', '#add_items', function() {
-  let id = $(this).data('id');
-
-  $.ajax({
-      type: 'POST',
-      url: '/profile/viewcart/add_items/',
-      data: {
-          pid: id,
-          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-      },
-      success: function(response) {
-          if (response.success) {
-            window.location.href = response.redirect_url;
-          } else {
-            alert(response.message);
-          }
-      },
-  });
-});
-
-$(document).on('click', '#less_items', function() {
-  let id = $(this).data('id');
-
-  $.ajax({
-      type: 'POST',
-      url: '/profile/viewcart/less_items/',
-      data: {
-          pid: id,
-          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-      },
-      success: function(response) {
-          if (response.success) {
-            window.location.href = response.redirect_url;
-          } else {
-            alert(response.message);
-            window.location.href = response.redirect_url;
-          }
-      },
-  });
-});
-
 </script>
 
 <script type="text/javascript">
-    
-  
+      
   $(document).on('click', "#update_decrement", function(e) {
     e.preventDefault();
 
     // Fetch the data-id and data-qty attributes from the clicked element
-    let val = parseInt($('#pro_qty').text());
+    let val = parseInt($('#stored_item').text());
     let productQty = parseInt($(this).data('qty')); // Use data-qty instead of data-product
-    let remainQty = parseInt($('#remain_qty').text());
+    let remainQty = parseInt($('#actual_item').text());
 
     //console.log("Product ID:", val); // Log the product ID
     //console.log("Product Quantity:", productQty); // Log the product quantity
@@ -126,41 +103,40 @@ $(document).on('click', '#less_items', function() {
     if (val > 1) {
         // Increment the remaining quantity displayed
         remainQty = remainQty + 1;
-        $("#remain_qty").text(remainQty);
-
+        
         // Decrement the product quantity
         val = val - 1;
-
+        
         // Update the data-id attribute with the new value
         $(this).data('id', val);
-
+        
         // Update the span text with the decremented value
-        $("#pro_qty").text(val);
-
+        
         //console.log("Updated Product Quantity:", val); // Log the updated product quantity
-    } else {
+      } else {
         alert("Request failed!! Quantity must be at least 1");
-    }
-});
-
-
+      }
+      $("#actual_item").text(remainQty);
+      $("#stored_item").text(val);
+    });
+    
 $(document).on('click', "#update_increment", function(e) {
   e.preventDefault();
-  let val = parseInt($(this).data('id'));
-  let product_qty = $('#remain_qty').text();
+  let val = parseInt($('#stored_item').text());
+  let product_qty = $('#actual_item').text();
   if(parseInt(product_qty) > 0){
     qty = parseInt(product_qty);
     qty = qty - 1;
-    $("#remain_qty").text(qty);
     val = val + 1;
     // Update the data-id attribute with the new value
     $(this).data('id', val);
     // Update the span text with the incremented value
-    $("#pro_qty").text(val);
-    console.log(val);
+    // console.log(val);
   } else {
     alert("Request failed!! Quantity Empty")
   }
+  $("#actual_item").text(qty);
+  $("#stored_item").text(val);
 });
 
   $(document).on('click', '#update_cart', function(e) {
@@ -179,24 +155,25 @@ $(document).on('click', "#update_increment", function(e) {
                 const product = response.data;
                 const productString = JSON.stringify(product).replace(/"/g, '&quot;');
                 Swal.fire({
-                    width: 300,
                     heightAuto: true,
                     html: `
-                        <div class="col-xl-6 justify-content-center" style="width:22vw;height:39vw;">
-                              <div class="card justify-content-center">
+                        <div class="d-flex justify-content-center align-items-center">
+
+                            <div class="col-lg-8">
+                              <div class="card">
                                   <div class="image-container">
                                       <img src="${product.img}" class="card-img" alt="${product.name}">
                                   </div>
                                   <div>
                                       <h5 class="card-title pt-0 fw-bolder">${product.name}</h5>
                                       <p class="text-secondary ">${product.des}</p>
-                                      <p class=" fw-bolder pt-0">Quantity: <span id="remain_qty">${product.qty} </span></p>
+                                      <p class=" fw-bolder pt-0">Quantity: <span id="actual_item">${product.qty} </span></p>
                                       <p class="pt-0 fw-bolder">Price: ₹${product.rate}</p>
                                       <div style="display: flex; justify-content: center; align-items: center;">
                                           <button type="submit" style="border: none; background: white;">
                                               <b class="bi bi-clipboard-minus fs-1 text-black" id="update_decrement" data-product="${product.qty}"></b>
                                           </button>
-                                          <span id="pro_qty">${product.item} </span>&nbsp;in cart
+                                          <span id="stored_item">${product.item} </span>&nbsp;in cart
                                           <button type="submit" style="border: none; background: white;">
                                               <b class="bi bi-clipboard-plus fs-1  text-black" id="update_increment" data-id="${product.item}" data-product="${productString}"></b>
                                           </button>
@@ -204,19 +181,21 @@ $(document).on('click', "#update_increment", function(e) {
                                   </div>
                               </div>
                             </div>
+                          </div>
                     `,
                     showCloseButton: true,
                     showConfirmButton: true,
-                    confirmButtonText: 'success',
+                    confirmButtonText: 'update',
                     customClass: {
-                      confirmButton: 'custom-confirm-button'
+                      confirmButton: 'custom-confirm-button',
+                      popup: 'swal-wide'
                     },
                     showCancelButton: true,
                     cancelButtonColor: "#000",
                 }).then((result) => {
                   
                     if (result.isConfirmed) {
-                       let newQty =  $("#pro_qty").text();
+                       let newQty =  $("#stored_item").text();
                        //console.log(newQty);
                        let url  =   '/update_viewcart/?id=' + id + '&qty='+newQty;
 
@@ -240,63 +219,65 @@ $(document).on('click', "#update_increment", function(e) {
     <img src="{% static 'assets/img/empty.png' %}" alt="">
   </center>
 {% else %}
+
+
 <div class="card">
   <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr align="center">
-          <th scope="col">ID</th>
-          <th scope="col">Product Name</th>
-          <th scope="col">Product Price</th>
-          <th scope="col">Product Quantity</th>
-          <th scope="col">Product Category</th>
-          <th scope="col">Update</th>
-          <th scope="col">Preview</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in pcart %}
-        <tr align="center">
-          <th scope="row">{{i|CheckId}}</th>
-          <td>{{i|CheckName|title}}</td>
-          <td>{{i|CheckPrice}}</td>
-          <td>{{i|CheckQty:request.session.pcart}}</td>
-          <td>{{i|CheckCategory|title}}</td>
-          <td>
-            <form method="post">
-              {% csrf_token %}
-                <i class="bi bi-pencil-square fs-4" id="update_cart" data-id="{{i|CheckId}}"></i>  
-            </form>
-          </td>
-          <td>
-            <form action method="post">
-              {% csrf_token %}
-              <i class="bi bi-eye-fill fs-4"></i>
-            </form>
-          </td>
-          <td>
-            <form action method="post">
-              {% csrf_token %}
-              <i class="bi bi-trash fs-3" id="delete_product"
-                data-id="{{i}}"></i>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <!-- Use the table-responsive class to make the table scrollable on small devices -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class>
+          <tr align="center">
+            <!-- <th scope="col">ID</th> -->
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Price</th>
+            <th scope="col">Product Quantity</th>
+            <th scope="col">Product Category</th>
+            <th scope="col">Update</th>
+            <th scope="col">Preview</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for id in pcart %}
+          <tr align="center">
+            <!-- <th scope="row">{{ id|CheckId }}</th> -->
+            <td>{{ id|CheckName|title }}</td>
+            <td>{{ id|CheckPrice }}</td>
+            <td>{{ id|CheckQty:request.session.pcart }}</td>
+            <td>{{ id|CheckCategory|title }}</td>
+            <td>
+              <form method="post">
+                {% csrf_token %}
+                  <i class="bi bi-pencil-square fs-4" id="update_cart" data-id="{{id|CheckId}}"></i>  
+              </form>
+            </td>
+            <td>
+              <form action method="post">
+                {% csrf_token %}
+                <i class="bi bi-eye-fill fs-4"></i>
+              </form>
+            </td>
+            <td>
+              <form action method="post">
+                {% csrf_token %}
+                <i class="bi bi-trash fs-3" id="delete_product"
+                  data-id="{{id}}"></i>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     <!-- End Default Table Example -->
-  </div>  
-  
+  </div>
   <li class="d-flex gap-2 mt-2 w-100 justify-content-center mb-2">
     <a href="/profile/viewcart/address/" class="btn btn-info">
       <span class="fs-5">Checkout</span>
     </a>
-    <!-- <a href="/profile/viewcart/checkout/" class="btn btn-info">
-      <span class="fs-5">Checkout</span>
-    </a> -->
   </li>
 </div>
+
 {% endif %}
 {% endblock page %}
