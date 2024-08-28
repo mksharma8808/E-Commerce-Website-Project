@@ -1,33 +1,10 @@
 {% extends "usersite/index.html" %}
-{% load static %}
-{% block page %}
-<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- <form id="regForm" method="post">
-    {% csrf_token %}
-    <h1>Register:</h1>
-    <div>
-            <div class="fw-bold fs-5">Name:</div>
-            <div class="d-flex justify-content-between">
-                <input placeholder="First name..." oninput="this.className = ''"
-                name="fname" id="fname">
-                <input id="lname" placeholder="Last name..."
-                oninput="this.className = ''" name="lname">
-            </div>
-            <div class="fw-bolder fs-5 pt-4">Login Info:</div>
-            <p><input id="email" placeholder="E-mail..."
-                oninput="this.className = ''" name="email" style="width: 80%;"></p>
-            <p><input id="pword" placeholder="Password..."
-                 name="pword" type="password" style="width: 80%;"></p>
-    </div>
-    <div style="overflow:auto;">
-        <div style="float:right;">
-            <button type="button" id="prevBtn">Cancel</button>
-            <button id="nextBtn">Submit</button>
-        </div>
-    </div>
-</form> -->
+
+{% block page %}
+
+<!-- <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="row justify-content-center">
   <div
@@ -81,7 +58,7 @@
           </div>
 
           <div class="col-12 text-center">
-            <button class="btn btn-info" id="signup">Signup</button>
+            <button class="btn btn-success" id="signup">Signup</button>
             <a href="/" class="btn btn-dark">Back</a>
           </div>
 
@@ -95,54 +72,6 @@
 
   </div>
 </div>
-
-<!-- <script>
-    $(document).on('click', "#signup", function (e) {
-            e.preventDefault();
-    
-            // Fetching the input values
-            let email = $('#yourEmail').val();
-            let username = $('#yourUsername').val();
-            let password = $('#yourPassword').val();
-            let confirmpassword = $('#confirmPassword').val();
-    
-            $.ajax({
-                type: 'POST',
-                url: '{% url "signup" %}',  // Django URL for the signup view
-                data: {
-                    email: email,
-                    username: username,
-                    password: password,
-                    confirmpassword:confirmpassword,
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),  // Fetching the CSRF token
-                },
-                success: function (response) {
-                    if (response.success) {
-                        // Simple JavaScript confirmation box
-                        //if (response.message == 'Already Create Account...'){
-                        //    alert(response.message);
-                        //    window.location.href = '/login/';
-                        //} else {
-                        if (confirm(response.message)) {
-                            window.location.href = '/verify_otp/';  // Redirect to verification page after confirmation
-                        } else {
-                            window.location.href = '/';  // Redirect to home page after confirmation
-                        }
-                      //}
-                    } else {
-                        alert('Registration failed: ' + response.message);  // Display error message
-                    }    
-                },
-                error: function (response) {
-                  if (response.error){
-                    alert(response.message);
-                  }
-                }
-            });
-        //}
-    });
-    
-</script> -->
 
 <style>
   /* page loader is begin */
@@ -233,11 +162,7 @@
             $('#text-message').text("Please wait!! OTP sent to your Registered Email Address For New User Creation");
             setTimeout(function () {
               $('.loader-overlay').hide();
-                  //if (confirm(response.message)) {
-                      window.location.href = '/verify_otp/';  // Redirect to verification page after confirmation
-                  //} else {
-                     // window.location.href = '/';  // Redirect to home page after confirmation
-                  //}   
+                window.location.href = '/verify_otp/';  // Redirect to verification page after confirmation
             }, 5000); // 5000 milliseconds = 5 seconds
           } else {
             alert(response.message);
@@ -262,20 +187,21 @@
     <p class="loader-text" id="text-message"></p>
   </div>
 </div>
+
 {% endblock page %}
+
+
 {% block content %}
 <div class="pagetitle">
-  <!-- <h1 class="text-danger">Login</h1> -->
-  <nav>
+  <nav style="--bs-breadcrumb-divider: '•';">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="/">
           <i class="bi bi-house-door"></i>
         </a>
       </li>
-      <li class="breadcrumb-item active">Signup</li>
-      <!-- <li class="breadcrumb-item active">Customer Login</li> -->
+      <li class="breadcrumb-item active">Sign up</li>
     </ol>
   </nav>
-</div>
+</div><!-- End Page Title -->
 {% endblock content %}

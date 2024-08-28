@@ -4,19 +4,14 @@
 
 {% block page %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Ensures the function runs when the DOM is fully loaded
-      displaynone1();
-    });
-    function displaynone1(){
-      document.querySelector('.sidebar').style.display = 'none';
-      document.querySelector('#footer').style.marginLeft = '0px';
-      document.querySelector('.main').style.marginLeft ='0px';
-    }
-    $(document).ready(function() {
-        $('form').on('submit', function(event) {
+    $(document).ready(function () {
+        $('form').on('submit', function (event) {
             event.preventDefault();
-
+    
+            // Show the loader
+            $('.loader-overlay').show();
+            $('#text-message').text('Please wait!! OTP sent to your Registered Email Address...');
+    
             $.ajax({
                 type: 'POST',
                 url: '{% url "forget_password_view" %}',  // Ensure this matches the URL pattern for Forget_password_view
@@ -24,78 +19,148 @@
                     email: $('#yourUsername').val(),
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
-                success: function(response) {
+                success: function (response) {
+                    // Hide the loader
+                    $('.loader-overlay').hide();
+    
                     if (response.success) {
-                        alert(response.message);
-                        window.location.href = response.redirect_url;
+                        //alert(response.message);
+                        
+                            window.location.href = response.redirect_url;
+                        
+                        
                     } else {
                         alert(response.message);
                     }
                 },
-                error: function(response) {
+                error: function (response) {
+                    // Hide the loader
+                    $('.loader-overlay').hide();
                     alert('An error occurred. Please try again.');
                 }
             });
         });
     });
-</script>
-<div class="row justify-content-center">
-    <div
-        class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
-        <div class="card mb-3">
-
-            <div class="card-body border-3">
-
-                <div class="pt-1 pb-4">
-                    <h1 class="card-title fs-4 text-black fw-bolder pb-0 text-decoration-underline">Forget Password</h1>    
-                </div>
-
-                {% if messages %}
-                {% for msg in messages %}
-                <div class="alert text-center alert-{{msg.tags}}">
-                    <i class="bi bi-{{msg.tags|Icon}} me-1"></i>{{msg}}
-                </div>
-                {% endfor %}
-                {% endif %}
-
-                <form class="row g-4 needs-validation" novalidate method="post">
-                    {% csrf_token %}
-                    <div class="col-12">
-                        <label for="yourUsername"
-                            class="form-label fw-bolder">Email ID:</label>
-                        <div class="input-group has-validation">
-                            <input type="text" name="yourUsername"
-                                class="form-control" id="yourUsername" required>
-                            <div class="invalid-feedback">Please enter your email id</div>
-                        </div>
+    </script>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
+            <div class="card mb-3">
+                <div class="card-body border-3">
+                    <div class="pt-1 pb-4">
+                        <h1 class="card-title fs-4 text-black fw-bolder pb-0 text-decoration-underline">Forget Password</h1>
                     </div>
-                    <div class="col-12 text-center">
-                        <button class="btn btn-info" type="submit">Send OTP</button>
-                        <button class="btn btn-dark" type="reset">Cancel</button>
-                        <a href="{% url 'login' %}" class="btn btn-dark">Back</a>
-                    </div>                    
-                </form>
-
+    
+                    {% if messages %}
+                    {% for msg in messages %}
+                    <div class="alert text-center alert-{{msg.tags}}">
+                        <i class="bi bi-{{msg.tags|Icon}} me-1"></i>{{msg}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+    
+                    <form class="row g-4 needs-validation" novalidate method="post">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <label for="yourUsername" class="form-label fw-bolder">Email ID:</label>
+                            <div class="input-group has-validation">
+                                <input type="text" name="yourUsername" class="form-control" id="yourUsername" required>
+                                <div class="invalid-feedback">Please enter your email id</div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn btn-success" type="submit">Send OTP</button>
+                            <button class="btn btn-dark" type="reset">Cancel</button>
+                            <a href="{% url 'login' %}" class="btn btn-dark">Back</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+    
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" style="display: none;">
+        <div class="loader-container">
+            <div class="loader"></div>
+            <p class="loader-text" id="text-message"></p>
+        </div>
+    </div>
+    
+    <!-- CSS for the loader -->
+    <style>
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+    
+        .loader:before,
+        .loader:after {
+            content: '';
+            border-radius: 50%;
+            position: absolute;
+            inset: 0;
+            box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+        }
+    
+        .loader:after {
+            box-shadow: 0 2px 0 #FF3D00 inset;
+            animation: rotate 2s linear infinite;
+        }
+    
+        @keyframes rotate {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    
+        .loader-text {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #000;
+        }
+    </style>
+    
 {% endblock page %}
+
 {% block content %}
+
 <div class="pagetitle">
-    <!-- <h1 class="text-danger">Login</h1> -->
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/">
-                    <i class="bi bi-house-door"></i>
-                </a>
-            </li>
-            <li class="breadcrumb-item active">Login</li>
-            <!-- <li class="breadcrumb-item active">Customer Login</li> -->
-            <li class="breadcrumb-item active">Forget Password</li>
-        </ol>
+    <nav style="--bs-breadcrumb-divider: '•';">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">
+            <i class="bi bi-house-door"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item active">Login</li>
+        <li class="breadcrumb-item active">Forget Password</li>
+      </ol>
     </nav>
-</div>
+</div><!-- End Page Title -->
+
 {% endblock content %}

@@ -154,14 +154,14 @@
                     </div>
 
                     <div class="col-12 text-center">
-                        <button class="btn btn-info" id="login">Login</button>
+                        <button class="btn btn-success" id="login">Login</button>
                         <a href="/" class="btn btn-dark">Back</a>
                     </div>
                     <div class="col-12">
                         <p class="text-secondary">New User ? <a
                                 href="/signup/"
                                 class="text-black fw-bold text-decoration-underline">Signup</a></p>
-                                <p class="text-secondary">Click Here ? <a href="{% url 'forget_password_view' %}" class="text-black fw-bold text-decoration-underline" target="_blank">forget password</a></p>
+                                <p class="text-secondary">Click Here ? <a href="{% url 'forget_password_view' %}" class="text-black fw-bold text-decoration-underline">forget password</a></p>
                     </div>
                 </form>
 
@@ -179,19 +179,19 @@
 </div>
 
 {% endblock page %}
+
+
 {% block content %}
 <div class="pagetitle">
-    <!-- <h1 class="text-danger">Login</h1> -->
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/">
-                    <i class="bi bi-house-door"></i>
-                </a>
-            </li>
-            <li class="breadcrumb-item active">Login</li>
-            <!-- <li class="breadcrumb-item active">Customer Login</li> -->
-        </ol>
+    <nav style="--bs-breadcrumb-divider: '•';">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">
+            <i class="bi bi-house-door"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item active">Log in</li>
+      </ol>
     </nav>
-</div>
+  </div><!-- End Page Title -->
 {% endblock content %}

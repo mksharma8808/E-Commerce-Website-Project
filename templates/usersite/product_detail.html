@@ -1,0 +1,70 @@
+
+{% block page %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
+
+<style>
+    .product-main-img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    .product-thumbnail {
+        width: 100%;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .product-thumbnail:hover {
+        border-color: #ff7d1a;
+    }
+    .price-discount {
+        color: #ff7d1a;
+        font-weight: bold;
+    }
+    .current-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    .old-price {
+        text-decoration: line-through;
+        color: gray;
+    }
+    .quantity-input {
+        width: 70px;
+        margin-right: 1rem;
+    }
+</style> 
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- Product Image Section -->
+        <div class="col-md-6 text-center">
+            <img src="https://via.placeholder.com/450x300" alt="Product" class="product-main-img">
+            <div class="d-flex justify-content-center mt-3">
+                <img src="https://via.placeholder.com/100" alt="Thumbnail" class="product-thumbnail me-2">
+                <img src="https://via.placeholder.com/100" alt="Thumbnail" class="product-thumbnail me-2">
+                <img src="https://via.placeholder.com/100" alt="Thumbnail" class="product-thumbnail">
+            </div>
+        </div>
+        <!-- Product Details Section -->
+        <div class="col-md-6">
+            <h5 class="text-uppercase text-muted">Sneaker Company</h5>
+            <h2>Fall Limited Edition Sneakers</h2>
+            <p class="text-muted">These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.</p>
+            <div class="d-flex align-items-center">
+                <span class="current-price">$125.00</span>
+                <span class="price-discount">50%</span>
+            </div>
+            <p class="old-price">$250.00</p>
+            <div class="d-flex align-items-center mt-3">
+                <input type="number" class="form-control quantity-input" value="0" min="0">
+                <button class="btn btn-warning text-white"><i class="bi bi-cart"></i> Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+{% endblock page %}

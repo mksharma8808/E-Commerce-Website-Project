@@ -13,95 +13,93 @@
 
     <!-- Favicons -->
     <!-- <link href="{% static 'assets/img/favicon.png' %}" rel="icon"> -->
-    <link href="{% static 'assets/img/apple-touch-icon.png' %}"
-      rel="apple-touch-icon">
+    <!-- <link href="{% static 'assets/img/apple-touch-icon.png' %}"
+      rel="apple-touch-icon"> -->
 
     <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-      rel="stylesheet">
+    <!-- <link href="https://fonts.gstatic.com" rel="preconnect"> -->
+    <!-- <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"> -->
 
     <!-- Vendor CSS Files -->
-    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}"
-      rel="stylesheet">
+    <!-- <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}"
+    rel="stylesheet">
     <link
       href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}"
-      rel="stylesheet">
-    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}"
-      rel="stylesheet">
+      rel="stylesheet"> -->
+    <!-- <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}"
+      rel="stylesheet"> -->
+    <!--
     <link href="{% static 'assets/vendor/quill/quill.snow.css' %}"
-      rel="stylesheet">
+    rel="stylesheet">
     <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}"
       rel="stylesheet">
     <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}"
       rel="stylesheet">
-    <link href="{% static 'assets/vendor/simple-datatables/style.css' %}"
-      rel="stylesheet">
+      <link href="{% static 'assets/vendor/simple-datatables/style.css' %}"
+      rel="stylesheet">-->
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+    <!-- <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"> -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet">
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap JS Bundle (with Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link
+    <!-- <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"
-      rel="stylesheet">
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+      rel="stylesheet"> -->
+    <!-- <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script> -->
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-      rel="stylesheet">
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"> -->
+
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script
       src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
     <style>
-      .dropdown-menu {
-        background-color: #f8f8f8; /* Background color of dropdown */
+        
+        .image-container {
+          overflow: hidden;
+        }
+      
+      .card-img {
+          transition: transform 0.5s ease;
+          width: 100%;
+          height: 40vh;
+          object-fit: cover;
       }
       
-      .dropdown-item:hover {
-        background-color: #e9ecef; /* Background color on hover */
-        color: #333; /* Text color on hover */
+      .image-container:hover .card-img {
+          transform: scale(1.1);
+          cursor: pointer;
       }
-      .image-container {
-        overflow: hidden;
-    }
-    
-    .card-img {
-        transition: transform 0.5s ease;
-        width: 100%;
-        height: 40vh;
-        object-fit: cover;
-    }
-    
-    .image-container:hover .card-img {
-        transform: scale(1.1);
-        cursor: pointer;
-    }
-    .swal-wide {
-      width: 60% !important; /* Adjust the width as per your design */
-      max-width: 600px;
-  }
   
-  .custom-confirm-button {
-      background-color: #28a745; /* Custom color for confirm button */
-      color: white;
-  }
+      .swal-wide {
+        width: 60% !important; /* Adjust the width as per your design */
+        max-width: 600px;
+    }
     
-    </style>
+    .custom-confirm-button {
+        background-color: #28a745; /* Custom color for confirm button */
+        color: white;
+    }
+    
+      
+      </style>
 
     <script>
         function redirectToPage() {
@@ -229,7 +227,7 @@
                         `,
                         showCloseButton: true,
                         showConfirmButton: true,
-                        confirmButtonText: 'success',
+                        confirmButtonText: 'Add Product',
                         customClass: {
                           confirmButton: 'custom-confirm-button',
                           popup: 'swal-wide'
@@ -258,8 +256,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-<style>
+    <style>
 /* Base Styles */
 .custom-header {
   background-color: #f8f8f8;
@@ -374,130 +371,157 @@
 
 </style>
 
-
-
   </head>
 
   <body>
     <!-- ======= Header ======= -->
 
+    <!-- start Header -->
     <header id="header" class="header fixed-top d-flex align-items-center"
-    style="background-color:#f8f8f8; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      style="background-color:#f8f8f8; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <div
+        class="container-fluid d-flex align-items-center justify-content-between">
 
-    <div class="d-flex align-items-center justify-content-between w-100">
-      <div class="d-flex align-items-center">
-        <a href="#" class="logo d-flex align-items-center">
-          <img src alt style="height: 30px; margin-right: 10px;">
-          <span class="d-none d-lg-block"
-            style="font-size: 1.2rem; font-weight: bold; color: #333;">E-COMMERCE
-            WEBSITE</span>
-        </a>
-      </div><!-- End Logo -->
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid justify-content-between">
+            <!-- Logo Section -->
+            <div class="d-flex align-items-center">
+              <a href="#" class="navbar-brand d-flex align-items-center">
+                <img src="{% static 'assets/img/logo11.webp' %}" alt="Logo"
+                  style="height: 30px; margin-right: 10px; border-radius:50%">
+                <span class="d-none d-lg-block"
+                  style="font-size: 1.2rem; font-weight: bold; color: #333;">E-COMMERCE
+                  WEBSITE</span>
+              </a>
 
-      <nav class="d-flex align-items-center gap-4">
-        <div class="dropdown nav-item">
-          <a class="nav-link dropdown-toggle" href="#" role="button"
-            id="createDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="color: #333; font-size: 1rem; font-weight: 500;"
-            onclick="myCategory();">
-            Category
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="createDropdown"
-            id="myDropdown">
-            {% for cat in category %}
-            <li>
-              <form id="myForm" action="{% url 'userfilter' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" value="{{cat.id}}" name="id">
-                <button type="submit"
-                  class="dropdown-item">{{cat.name|title}}</button>
-              </form>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
+              <!-- Navbar Toggler for Mobile -->
+              <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            </div>
+            <!-- Navbar Content -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+              <nav
+                class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center gap-4">
+                <!-- Category Dropdown -->
+                <div class="dropdown nav-item">
+                  <a class="nav-link dropdown-toggle" href="#" role="button"
+                    id="createDropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style="color: #333; font-size: 1rem; font-weight: 500;"
+                    onclick="myCategory();">
+                    Category
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="createDropdown"
+                    id="myDropdown">
 
-        <div class="dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button"
-            id="watchDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-            style="color: #333; font-size: 1rem; font-weight: 500;"
-            onclick="myPrice();">
-            Price
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="watchDropdown"
-            id="myPrice">
-            {% if pri %}
-            <li>
-              <form action="{% url 'userprice' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="price"
-                  value="{{request.session.firstprice}}">
-                <button type="submit"
-                  class="dropdown-item">{{0|Currency}}-{{pri.price__max|Currency}}</button>
-              </form>
-            </li>
-            <li>
-              <form action="{% url 'userprice' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="price"
-                  value="{{request.session.secondprice}}">
-                <button type="submit"
-                  class="dropdown-item">{{pri.price__max1|Currency}}-{{pri.price__max2|Currency}}</button>
-              </form>
-            </li>
-            <li>
-              <form action="{% url 'userprice' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="price"
-                  value="{{request.session.thirdprice}}">
-                <button type="submit"
-                  class="dropdown-item">{{pri.price__max3|Currency}}-Above</button>
-              </form>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
+                    {% for cat in category %}
+                    <li>
+                      <form id="myForm" action="{% url 'userfilter' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{cat.id}}" name="id">
+                        <button type="submit"
+                          class="dropdown-item">{{cat.name|title}}</button>
+                      </form>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
 
-        <div class="dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button"
-            id="demandDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="color: #333; font-size: 1rem; font-weight: 500;"
-            onclick="myCompany();">
-            Company
-          </a>
-          <!-- <ul class="dropdown-menu" aria-labelledby="demandDropdown"
-            id="myCompany">
-            <li><a class="dropdown-item" href="#">Buy/Rent Movies</a></li>
-            <li><a class="dropdown-item" href="#">Subscription Plans</a></li>
-            <li><a class="dropdown-item" href="#">Exclusive Content</a></li>
-          </ul> -->
-        </div>
-      </nav>
+                <!-- Price Dropdown -->
+                <div class="dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button"
+                    id="watchDropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style="color: #333; font-size: 1rem; font-weight: 500;"
+                    onclick="myPrice();">
+                    Price
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="watchDropdown"
+                    id="myPrice">
+                    {% if pri %}
+                    <li>
+                      <form action="{% url 'userprice' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="price"
+                          value="{{request.session.firstprice}}">
+                        <button type="submit"
+                          class="dropdown-item">{{0|Currency}}-{{pri.price__max|Currency}}</button>
+                      </form>
+                    </li>
+                    <li>
+                      <form action="{% url 'userprice' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="price"
+                          value="{{request.session.secondprice}}">
+                        <button type="submit"
+                          class="dropdown-item">{{pri.price__max1|Currency}}-{{pri.price__max2|Currency}}</button>
+                      </form>
+                    </li>
+                    <li>
+                      <form action="{% url 'userprice' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="price"
+                          value="{{request.session.thirdprice}}">
+                        <button type="submit"
+                          class="dropdown-item">{{pri.price__max3|Currency}}-Above</button>
+                      </form>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </div>
 
-      <div class="d-flex align-items-center gap-3">
-        <a href="{% url 'userviewcart' %}" class="btn btn-success"
-          style="padding: 5px 15px; font-weight: 500;">
-          <div class="d-flex">
-            <i class="bi bi-cart4 fs-5 text-white"></i>
-            {% if request.session.pcart %}
-            <span
-              class=" text-white fw-bold">{{request.session.pcart|Counter}}
-            </span>
-            {% endif %}
+                <!-- Company Dropdown -->
+                <div class="dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button"
+                    id="demandDropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style="color: #333; font-size: 1rem; font-weight: 500;"
+                    onclick="myCompany();">
+                    Company
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="demandDropdown"
+                    id="myCompany">
+                    <li><a class="dropdown-item" href="#">Buy/Rent
+                        Movies</a></li>
+                    <li><a class="dropdown-item" href="#">Subscription
+                        Plans</a></li>
+                    <li><a class="dropdown-item" href="#">Exclusive
+                        Content</a></li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
           </div>
-        </a>
-        <a href="{% url 'details' %}" class="nav-link"
-          style="color: #333; font-size: 1rem; font-weight: 500;">Profile</a>
-        <a href="/logout/" class="nav-link"
-          style="color: #333; font-size: 1rem; font-weight: 500;">Log out</a>
-      </div><!-- End Action Buttons -->
-    </div><!-- End Container -->
+        </nav>
 
-  </header>
-
-    <!-- End Header -->
+        <div class="d-flex align-items-center gap-3">
+          <a href="{% url 'userviewcart' %}" class="btn btn-success"
+            style="padding: 5px 15px; font-weight: 500;">
+            <div class="d-flex">
+              <i class="bi bi-cart4 fs-5 text-white"></i>
+              {% if request.session.pcart %}
+              <span
+                class=" text-white fw-bold">{{request.session.pcart|Counter}}
+              </span>
+              {% endif %}
+            </div>
+          </a>
+          <a href="{% url 'details' %}" class="nav-link d-flex align-items-center"
+            style="color: #333; font-size: 1rem; font-weight: 500;">
+            <img src="{{request.session.cid|User_Image}}" style="border-radius: 50%; height:50px; width:50px" alt="user">
+            <span>Profile</span>
+          </a>
+          <a href="/logout/" class="nav-link"
+            style="color: #333; font-size: 1rem; font-weight: 500;">Log out</a>
+        </div><!-- End Action Buttons -->
+      </div>
+    </header>
+    <!-- end header -->
 
     <!-- ======= Sidebar ======= -->
     <!-- Sidebar can be added here -->
@@ -514,9 +538,6 @@
               </a>
             </li>
             <li class="breadcrumb-item active">All Category</li>
-            {% if loc %}
-            <li class="breadcrumb-item active">{{sp.name|title}}</li>
-            {% endif %}
           </ol>
         </nav>
       </div><!-- End Page Title -->
@@ -525,55 +546,67 @@
 
       {% block page %}
       <!-- Slides with captions -->
-      <div id="carouselExampleCaptions" class="carousel slide pb-2" data-bs-ride="carousel">
+      <div id="carouselExampleCaptions" class="carousel slide pb-2"
+        data-bs-ride="carousel">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active" align="center">
-            <img src="{% static 'assets/img/1.png' %}" width="100%"  alt="...">
+            <img src="{% static 'assets/img/1.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>First slide label</h5>
-              <p>Some representative placeholder content for the first slide.</p>
+              <p>Some representative placeholder content for the first
+                slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
             <img src="{% static 'assets/img/2.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Second slide label</h5>
-              <p>Some representative placeholder content for the second slide.</p>
+              <p>Some representative placeholder content for the second
+                slide.</p>
             </div>
           </div>
           <div class="carousel-item" align="center">
             <img src="{% static 'assets/img/3.png' %}" width="100%" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5>Third slide label</h5>
-              <p>Some representative placeholder content for the third slide.</p>
+              <p>Some representative placeholder content for the third
+                slide.</p>
             </div>
           </div>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button"
+          data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
           <!-- <span class="carousel-control-prev-icon " aria-hidden="true"></span> -->
           <i class="ri-arrow-drop-left-line text-black fs-2"></i>
-          <span class="text-black fs-5" style="background-color: none;">Previous</span>
+          <span class="text-black fs-5"
+            style="background-color: none;">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <button class="carousel-control-next" type="button"
+          data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
           <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
           <!-- <span class="">Next</span> -->
-          <span class="text-black fs-5" style="background-color: none;">Next</span>
+          <span class="text-black fs-5"
+            style="background-color: none;">Next</span>
           <i class="ri-arrow-drop-right-line text-black fs-2"></i>
-          
+
         </button>
 
       </div><!-- End Slides with captions -->
-      
+
       <section class="section">
         <div class="row align-items-top d-flex justify-content-around">
           {% for p in prods %}
-          <div class="col-lg-4  col-sm-12 col-md-6 col-xl-4" >
+          <div class="col-lg-4  col-sm-12 col-md-6 col-xl-4">
             <div class="card">
               <div class="image-container">
                 <img src="{{p.image.url}}" class="card-img img-fluid" alt="...">
@@ -583,9 +616,9 @@
                 <p class="card-text text-secondary">{{p.des|title}}</p>
                 <p class="card-text fw-bolder">few items :
                   {% if request.session.pcart %}
-                    {{p.id|Count_Item:request.session.pcart}}
+                  {{p.id|Count_Item:request.session.pcart}}
                   {% else %}
-                    {{p.item_qty}}
+                  {{p.item_qty}}
                   {% endif %}
                 </p>
                 <div style="display:flex; justify-content:space-between;">
@@ -594,26 +627,25 @@
               </div>
               <div class="card-footer d-flex justify-content-between gap-1">
                 {% if request.session.pcart|Button:p %}
-                  <a href="{% url 'userviewcart' %}">
-                      <button class="btn btn-success w-100">Go to Cart </button>
-                  </a>
+                <a href="{% url 'userviewcart' %}">
+                  <button class="btn btn-success w-100">Go to Cart </button>
+                </a>
                 {% else %}
-                  <form method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-success w-100" id="addtocart"
-                      data-id="{{p.id}}">
-                      <i class="bi bi-cart4"></i>
-                      Add to Cart
-                    </button>
-                  </form>
-                {% endif %}
-                <form action method="post">
+                <form method="post">
                   {% csrf_token %}
-                  <button id="buynow" data-id="{{p.id}}"
+                  <button class="btn btn-success w-100" id="addtocart"
+                    data-id="{{p.id}}">
+                    <i class="bi bi-cart4"></i>
+                    Add to Cart
+                  </button>
+                </form>
+                {% endif %}
+                
+                  <a href="#"
                     class="btn btn-outline-secondary w-100">
                     View Details
                   </button>
-                </form>
+                <!-- </form> -->
               </div>
             </div>
           </div>
@@ -627,12 +659,12 @@
     <!-- Footer content can be added here -->
 
     <!-- Vendor JS Files -->
-    <script
+    <!-- <script
       src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
     <script
       src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-      
-      <script
+
+    <script
       src="{% static 'assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
     <script src="{% static 'assets/vendor/chart.js/chart.umd.js' %}"></script>
@@ -645,19 +677,15 @@
       src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'assets/js/main.js' %}"></script>
 
-
-    <!-- Custom jQuery Script -->
-<script>
+    <script>
   $(document).ready(function() {
       $("#navbarToggleBtn").click(function() {
           $("#navbarContent").toggleClass("show");
       });
   });
 </script>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
-  
-    
   </body>
 
 </html>

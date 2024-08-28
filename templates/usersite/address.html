@@ -17,7 +17,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .header {
-            background-color: #139acf;
+            /* background-color: #1c5e03; */
             color: #fff;
             padding: 10px;
             font-size: 18px;
@@ -78,7 +78,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">Delivery Address</div>
+        <div class="header bg-success">Delivery Address</div>
         {% for add in address %}
         <div class="address-card">
             <input type="radio" name="address" id="address1" checked>
@@ -86,45 +86,22 @@
                 <h3>{{add.cname|FilterName|title}} <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> {{add.phone}}</h3>
                 <p>{{add.address}}, {{add.city}} District, {{add.state}} - {{add.postal}}</p>
             </label>
-            <!-- <a href="/profile/viewcart/address/editaddress/" class="edit-link">Edit</a> -->
-            <!-- <a href="/profile/viewcart/checkout/" class="text-decoration-none"> -->
-                <form action="/profile/viewcart/address/editaddress/" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{add.id}}" name="addid">
-                    <button type="submit" class="edit-link border-0 bg-white text-decoration-underline">Edit</button>
-                </form>
-                
-                <form action="/profile/viewcart/checkout/" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{add.id}}" name="addid">
-                    <button type="submit" class="deliver-btn">Deliver Here</button>
-                </form>
-            <!-- </a> -->
+            <form action="/profile/viewcart/address/editaddress/" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{add.id}}" name="addid">
+                <button type="submit" class="edit-link border-0 bg-white text-decoration-underline">Edit</button>
+            </form>
+            
+            <form action="/profile/viewcart/checkout/" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{add.id}}" name="addid">
+                <button type="submit" class="deliver-btn">Deliver Here</button>
+            </form>
         </div>
-
-        <!-- <div class="address-card">
-            <input type="radio" name="address" id="address2">
-            <label for="address2">
-                <h3>Naeem Nawaz <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> 6387918560</h3>
-                <p>Asharfabad turiya gang Bansal, Lucknow, Uttar Pradesh - 226003</p>
-            </label>
-            <a href="#" class="edit-link">Edit</a>
-            <button class="deliver-btn">Deliver Here</button>
-        </div>
-
-        <div class="address-card">
-            <input type="radio" name="address" id="address3">
-            <label for="address3">
-                <h3>Naeem Nawaz TFBL <span style="background-color: #e0e0e0; padding: 3px 6px; border-radius: 3px; font-size: 12px;">WORK</span> 6387918560</h3>
-                <p>FLAT NO.82 PKT-7 SEC-2 ROHINI MIRZAHADIPURA, New Delhi, Delhi - 110086</p>
-            </label>
-            <a href="#" class="edit-link">Edit</a>
-            <button class="deliver-btn">Deliver Here</button>
-        </div> -->
         {% endfor %}
 
         <div class="add-new-address">
-            <a href="/profile/viewcart/address/newaddress/">+ Add a new address</a>
+            <a href="/profile/viewcart/address/newaddress/" class="fs-5">+ Add a new address</a>
         </div>
     </div>
 

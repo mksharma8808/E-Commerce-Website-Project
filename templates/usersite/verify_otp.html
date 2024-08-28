@@ -1,5 +1,4 @@
 {% extends "usersite/index.html" %}
-{% load static %}
 {% load my_filter %}
 
 {% block page %}
@@ -51,12 +50,6 @@
     </div>
 </div>
 
-<div class="loader-overlay" style="display: none;">
-    <div class="loader-container">
-      <div class="loader"></div>
-      <p class="loader-text" id="text-message"></p>
-    </div>
-  </div>
 
 <style>
     /* Page loader CSS */
@@ -138,14 +131,15 @@
               },
               success: function(response) {
                   // Hide the loader after receiving a response
-                  $('.loader-overlay').hide();
-  
-                  if (response.success) {
-                      alert(response.message);
-                      window.location.href = response.redirect_url;
+                  $('.loader-overlay').show(); // Hide the loader
+                    if (response.success) {
+                        setTimeout(function(){
+                            $('.loader-overlay').hide();
+                            window.location.href = response.redirect_url;
+                        }, 5000);
                   } else {
                       alert(response.message);
-                      window.location.href = '/verify_otp/';
+                      window.location.reload();
                   }
               },
               error: function(response) {
@@ -158,20 +152,22 @@
   </script>
   
 {% endblock page %}
+
+
 {% block content %}
+
 <div class="pagetitle">
-    <!-- <h1 class="text-danger">Login</h1> -->
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/">
-                    <i class="bi bi-house-door"></i>
-                </a>
-            </li>
-            <li class="breadcrumb-item active">Signup</li>
-            <li class="breadcrumb-item active">Verify otp</li>
-            <!-- <li class="breadcrumb-item active">Forget Password</li> -->
-        </ol>
+    <nav style="--bs-breadcrumb-divider: '•';">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">
+            <i class="bi bi-house-door"></i>
+          </a>
+        </li>
+        <li class="breadcrumb-item active">Signup</li>
+        <li class="breadcrumb-item active">Verify otp</li>
+      </ol>
     </nav>
-</div>
+  </div><!-- End Page Title -->
+
 {% endblock content %}

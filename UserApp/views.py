@@ -303,7 +303,7 @@ class Send_mail_view(View):
         cats = Category.objects.all()
         return render(request, "usersite/check_otp.html", {'cats': cats})
     def post(self, request):
-            otp = request.POST.get("otp")
+            otp = request.POST.get("yourotp")
             if otp == request.session['str_otp']:
                 del request.session['str_otp']
                 return JsonResponse({'success': True, 'redirect_url': '/login/forget/reset_password/'})
@@ -312,17 +312,20 @@ class Send_mail_view(View):
             
 class Resend_mail_view(View):
     def post(self,request):
-        email=request.session.get('em')
-        cobj = Customer.objects.get(email=email)
-        if cobj:
-            otp = random.randint(100000, 999999)
-            request.session['str_otp']=str(otp)
-            subject = "This message related to forget password"
-            message = f"OTP is {otp}"
-            from_email = settings.EMAIL_HOST_USER
-            recipient_list = [email]
-            send_mail(subject, message, from_email, recipient_list)
-            return JsonResponse({'success': True, 'message': 'OTP sent successfully', 'redirect_url': '/login/send_mail/'})
+        try:
+            email = request.session.get('em')
+            cobj = Customer.objects.get(email = email)
+            if cobj:
+                otp = random.randint(100000, 999999)
+                request.session['str_otp'] = str(otp)
+                subject = "This message related to forget password"
+                message = f"OTP is {otp}"
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [email]
+                send_mail(subject, message, from_email, recipient_list)
+                return JsonResponse({'success': True, 'message': 'OTP sent successfully', 'redirect_url': '/login/send_mail/'})
+        except:
+            return JsonResponse({'success': False,'message': 'Email Id not Exist'})
     def get(self,request):
         return redirect('/login/forget/')
     # def get(self,request):
@@ -359,7 +362,7 @@ class Reset_password_view(View):
         conf_pass = request.POST.get('confirm_pass')
         str_email = request.session['em']
         if newpass == conf_pass:
-            obj = Customer.objects.get(email=str_email)
+            obj = Customer.objects.get(email = str_email)
             obj.cpass = newpass  # Update the password field directly
             obj.save()
             del request.session['em']
@@ -933,11 +936,11 @@ class DownloadInvoice_view(View):
 
 class Address_view(View):
     def get(self,request):
-        user=request.session.get('cuser')
+        user = request.session.get('cuser')
         if not user:
             return HttpResponseRedirect('/login/')
-        id=request.session.get('cid')
-        address = Address.objects.filter(cust_reference=id)
+        id = request.session.get('cid')
+        address = Address.objects.filter(cust_reference = id)
         return render(request,"usersite/address.html",{'address': address})
 
 ref = None
@@ -981,6 +984,10 @@ class UpdateAddress_view(View):
         add_obj=Address(id=id,cname=cname,phone=phone,address=address,city=city,state=state,postal=postal,cust_reference=ref)
         add_obj.save()
         return HttpResponseRedirect('/profile/viewcart/address/')
+ 
+class Product_detail_view(View):
+    def get(self,request):
+        return render(request,"usersite/product_detail.html") 
     
 class NewAddress_create_view(View):
     def get(self,request):
@@ -1006,67 +1013,107 @@ class NewAddress_create_view(View):
         add_obj.save()
         return HttpResponseRedirect('/profile/viewcart/address/')
         
+from UserApp.models import Profile 
 
 class Customerprofile_view(View):
     def get(self,request):
-        cats=Category.objects.all()
-        data={'cats':cats,'msg':"hello"}
-        return render(request,"usersite/profile.html",data)
+        # cats=Category.objects.all()
+        # data={'cats':cats,'msg':"hello"}
+        return render(request,"usersite/profile.html")
 
 class ChangeImg_view(View):
     def post(self,request):
-        id=request.session['cid']
-        im=request.FILES['changeimage']
-        cobj=Customer.objects.get(id=id)
-        n,fn,e,ph,cp,ge,add=cobj.name,cobj.fname,cobj.email,cobj.phone,cobj.cpass,cobj.gender,cobj.address
-        obj=Customer(id=id,name=n,fname=fn,email=e,phone=ph,cpass=cp,gender=ge,address=add,image=im)
-        obj.save()
-        return redirect('/profile/profile_details/')
+        try:
+            id = request.session['cid']
+            im = request.FILES['profileImage']
+            cobj = Customer.objects.get(id = id)
+            pobj = Profile.objects.get(reference = cobj)
+            pobj.image = im
+            # pobj.save()
+        except:
+            pobj = Profile(name=' ', fname=' ', image=im, address=' ', phone=' ', gender=' ', reference=cobj)
+            # print("confirm")
+        else:
+            pass
+        finally:
+            pobj.save()
+            return redirect('/profile/details/')
+        
+
+class DeleteImg_view(View):
+    def get(self,request):
+        try:
+            id = request.session['cid']
+            cobj = Customer.objects.get(id = id)
+            pobj = Profile.objects.get(reference = cobj)
+            pobj.image.delete()
+        except:
+            pass
+        finally:
+            return redirect('/profile/details/')
         
     # def get(self,request):
     #     cats=Category.objects.all()
     #     data={'cats':cats,'msg1':"congrates",'msg':"hello"}
     #     return render(request,"usersite/profile.html",data)
-    
 class ChangeProfile_view(View):
     def post(self,request):
-        n=request.POST.get('fullName')
-        fn=request.POST.get('fatherName')
-        ph=request.POST.get('phone')
-        em=request.POST.get('email')
-        add=request.POST.get('address')
-        g=request.POST.get('gender')
-        id=request.session['cid']
-        cobj=Customer.objects.get(id=id)
-        obj=Customer(id=id,name=n,fname=fn,phone=ph,email=em,address=add,gender=g,image=cobj.image,cpass=cobj.cpass)
-        obj.save()
-        return redirect('/profile/profile_details/')
+        try:
+            id = request.session['cid']
+            cobj = Customer.objects.get(id = id)
+            n = request.POST.get('fullName')
+            fn = request.POST.get('fatherName')
+            ph = request.POST.get('phone')
+            add = request.POST.get('address')
+            g = request.POST.get('gender')
+            reference = Profile.objects.get(reference = cobj)
+            # To update profile table
+            obj = Profile(id=reference.id, name=n, fname=fn, phone=ph, address=add, gender=g, reference=cobj, image=reference.image)
+            # obj.save()
+            # return redirect('/profile/details/')
+        except:
+            obj = Profile(name=n, fname=fn, phone=ph, address=add, gender=g, reference=cobj)
+        finally:
+            obj.save()
+            return redirect('/profile/details/')
+    
+# class Changepwd_view(View):
+#     def post(self,request):
+#         id = request.session['cid']
+#         cobj = Customer.objects.get(id = id)
+#         cpass=request.POST.get('currentPassword')
+#         # print(cobj.cpass,type(cobj.cpass))
+#         # print(cpass,type(cpass))
+#         if str(cpass) != cobj.password:
+#             messages.warning(request,"Invalid Current Password")
+#             return redirect('/profile/profile_details/')
+#         newpass=request.POST.get('newPassword')
+#         renewpass=request.POST.get('renewPassword')
+#         if newpass != renewpass:
+#             messages.warning(request,"Invalid Re-new Password")
+#             return redirect('/profile/profile_details/')
+#         obj=Customer(id=id,cpass=newpass,name=cobj.name,fname=cobj.fname,email=cobj.email,image=cobj.image,phone=cobj.phone,gender=cobj.gender,address=cobj.address)
+#         obj.save()
+#         messages.success(request,"Successfully Changed")
+#         return redirect('/profile/profile_details/')
     
 class Changepwd_view(View):
-    def post(self,request):
-        id=request.session['cid']
-        cobj=Customer.objects.get(id=id)
-        cpass=request.POST.get('currentPassword')
-        print(cobj.cpass,type(cobj.cpass))
-        print(cpass,type(cpass))
-        if str(cpass) != cobj.cpass:
-            messages.warning(request,"Invalid Current Password")
-            return redirect('/profile/profile_details/')
-        newpass=request.POST.get('newPassword')
-        renewpass=request.POST.get('renewPassword')
+    def post(self, request):
+        id = request.session['cid']
+        cobj = Customer.objects.get(id=id)
+        cpass = request.POST.get('currentPassword')
+        
+        if str(cpass) != cobj.password:
+            return JsonResponse({"message": "Invalid Current Password"}, status=400)
+        
+        newpass = request.POST.get('newPassword')
+        renewpass = request.POST.get('renewPassword')
+        
         if newpass != renewpass:
-            messages.warning(request,"Invalid Re-new Password")
-            return redirect('/profile/profile_details/')
-        obj=Customer(id=id,cpass=newpass,name=cobj.name,fname=cobj.fname,email=cobj.email,image=cobj.image,phone=cobj.phone,gender=cobj.gender,address=cobj.address)
-        obj.save()
-        messages.success(request,"Successfully Changed")
-        return redirect('/profile/profile_details/')
-    
-class DeleteImg_view(View):
-    def post(self,request):
-        id=request.session['cid']
-        cobj=Customer.objects.get(id=id)
-        obj=Customer(id=id,name=cobj.name,fname=cobj.fname,email=cobj.email,phone=cobj.phone,cpass=cobj.cpass,image=" ",gender=cobj.gender,address=cobj.address)
-        obj.save()
-        return redirect('/profile/profile_details/')
+            return JsonResponse({"message": "Invalid Re-new Password"}, status=400)
+        
+        cobj.password = newpass
+        cobj.save()
+        return JsonResponse({"message": "Successfully Changed"}, status=200)    
+
     

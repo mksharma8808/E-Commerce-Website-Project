@@ -2,271 +2,258 @@
 {% load my_filter %}
 
 {% block content %}
+
 <div class="pagetitle">
-  <nav>
+  <nav style="--bs-breadcrumb-divider: '•';">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="/profile/">
           <i class="bi bi-house-door"></i>
         </a>
       </li>
-      <li class="breadcrumb-item">Profile</li>
-      <!-- <li class="breadcrumb-item active">Profile</li> -->
+      <li class="breadcrumb-item active">Profile</li>
     </ol>
   </nav>
-</div>
+</div><!-- End Page Title -->
+
 {% endblock content %}
 
 {% block page %}
+
 <section class="section profile">
-  <div class="d-flex">
-    <div>
-
-      <div class="card">
-        <div
-          class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-          <img src="" alt="Profile"
-            style="height: 20vh;border-radius:50%;width:25vw;">
-
-          <div class="social-links mt-2">
-            <a href="#" class="twitter">
-              <i class="bi bi-twitter" style="color:aqua;"></i>
-            </a>
-            <a href="#" class="facebook">
-              <i class="bi bi-facebook" style="color:navy;"></i>
-            </a>
-            <a href="#" class="instagram">
-              <i class="bi bi-instagram" style="color:rgb(163, 12, 163);"></i>
-            </a>
-            <a href="#" class="linkedin">
-              <i class="bi bi-linkedin" style="color:navy;"></i>
-            </a>
+  <div class="container">
+    <div class="row">
+      <!-- Profile Image and Social Links -->
+      <div class="col-md-4">
+        <div class="card">
+          <div
+            class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <img src="{{request.session.cid|User_Image}}" alt="Profile" class="rounded-circle img-fluid mb-3"
+              style="height: 150px; width: 150px;">
+            <div class="social-links mt-2">
+              <a href="#" class="twitter me-2">
+                <i class="bi bi-twitter" style="color:aqua;"></i>
+              </a>
+              <a href="#" class="facebook me-2">
+                <i class="bi bi-facebook" style="color:navy;"></i>
+              </a>
+              <a href="#" class="instagram me-2">
+                <i class="bi bi-instagram" style="color:rgb(163, 12, 163);"></i>
+              </a>
+              <a href="#" class="linkedin">
+                <i class="bi bi-linkedin" style="color:navy;"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-    </div>
+      <!-- Profile Details, Edit, and Change Password Tabs -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Tab Navigation -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+              <li class="nav-item">
+                <button class="nav-link active fs-5" data-bs-toggle="tab"
+                  data-bs-target="#profile-overview">Overview</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link fs-5" data-bs-toggle="tab"
+                  data-bs-target="#profile-edit">Edit Profile</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link fs-5" data-bs-toggle="tab"
+                  data-bs-target="#profile-change-password">Change
+                  Password</button>
+              </li>
+            </ul>
 
-    <div class="col-xl-8">
-
-      <div class="card">
-        <div class="card-body pt-3">
-          <!-- Bordered Tabs -->
-          <ul class="nav nav-tabs nav-tabs-bordered">
-
-            <li class="nav-item">
-              <button class="nav-link active fs-5" data-bs-toggle="tab"
-                data-bs-target="#profile-overview" style="color: navy;">Overview</button>
-            </li>
-
-            <li class="nav-item">
-              <button class="nav-link fs-5" data-bs-toggle="tab"
-                data-bs-target="#profile-edit" style="color: navy;">Edit Profile</button>
-            </li>
-
-            <li class="nav-item">
-              <button class="nav-link fs-5" data-bs-toggle="tab"
-                data-bs-target="#profile-change-password" style="color: navy;">Change
-                Password</button>
-            </li>
-
-          </ul>
-          <div class="tab-content pt-2">
-
-            <div class="tab-pane fade show active profile-overview"
-              id="profile-overview">
-
-              <h5 class="card-title fs-3" style="color:navy; font-family:jokerman;">Profile Details</h5>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label fs-5" style="color:purple;">Full Name : </div>
-                <div
-                  class="col-lg-9 col-md-8 text-secondary fs-5"></div>
-              </div>
-
-              
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label fs-5" style="color:purple;">Email</div>
-                <div
-                  class="col-lg-9 col-md-8 text-secondary fs-5">{{request.session.cid|CustEmail}}</div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label fs-5" style="color:purple;">Address</div>
-                <div
-                  class="col-lg-9 col-md-8 text-secondary fs-5"></div>
-              </div>
-
-              
-            </div>
-
-            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-              <div class="row mb-3">
-                <label for="profileImage"
-                  class="col-md-4 col-lg-3 col-form-label">Profile
-                  Image</label>
-                <div class="col-md-8 col-lg-9">
-                  <img src="" alt="Profile">
-                  <div class="pt-2 d-flex gap-2">
-                    <form method="post" enctype="multipart/form-data"
-                      action="/profile/profile_details/change_img/">
-                      {% csrf_token %}
-                      <input type="file" name="changeimage"
-                        class="text-success">
-                      <button type="submit" class="btn btn-primary btn-sm"
-                        title="Upload new profile image">
-                        <i class="bi bi-upload"></i>
-                      </button>
-                    </form>
-                    <form method="post" enctype="multipart/form-data"
-                      action="/profile/profile_details/delete_img/">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-danger btn-sm"
-                        title="Remove my profile image">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </form>
+            <!-- Tab Content -->
+            <div class="tab-content pt-2">
+              <!-- Profile Overview Tab -->
+              <div class="tab-pane fade show active" id="profile-overview">
+                <h5 class="card-title fs-3 text-primary">Profile Details</h5>
+                <div class="row mb-3">
+                  <div class="col-sm-4 text-secondary">Full Name:</div>
+                  <div class="col-sm-8">
+                    {{request.session.cid|User_Name|title}}
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-4 text-secondary">Email:</div>
+                  <div class="col-sm-8">
+                    {{request.session.cid|CustEmail}}
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-4 text-secondary">Address:</div>
+                  <div class="col-sm-8">
+                    {{ request.session.cid|User_Address|title }}
                   </div>
                 </div>
               </div>
-              <form action="/profile/profile_details/change_profile/" method="post">
-                {% csrf_token %}
-                <div class="row mb-3">
-                  <label for="fullName"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Full
-                    Name</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="fullName" type="text" class="form-control"
-                      id="fullName" value="{{request.session.cid|Cust|title}}">
-                  </div>
-                </div>
+
+              <!-- Profile Edit Tab -->
+              <div class="tab-pane fade" id="profile-edit">
 
                 <div class="row mb-3">
-                  <label for="fatherName"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Father
-                    Name</label>
+                  <label for="profileImage"
+                    class="col-md-4 col-lg-3 col-form-label">Profile
+                    Image</label>
                   <div class="col-md-8 col-lg-9">
-                    <input name="fatherName" type="text" class="form-control"
-                      id="fatherName"
-                      value="">
+                    <img src="{{request.session.cid|User_Image}}"
+                      alt="Profile" id="current-profile-image" height="150vh">
+                    <div class="pt-2 ">
+                      <!-- Upload Button -->
+                      <form id="upload-image-form" method="post" action="/profile/profile_details/change_img/"
+                        enctype="multipart/form-data" class="d-inline">
+                        {% csrf_token %}
+                        <input type="file" id="profileImage" name="profileImage" class="d-flex"
+                          accept="image/*">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                          title="Upload new profile image" id="upload-btn">upload</button>
+                      </form>
+                      <!-- Remove Button -->
+                      <a href="/profile/profile_details/delete_img/" class="btn btn-danger btn-sm"
+                        title="Remove my profile image" id="remove-btn">delete</a>
+                    </div>
                   </div>
                 </div>
 
-                <div class="row mb-3">
-                  <label for="Gender"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Gender</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="gender" type="text" class="form-control"
-                      id="Gender" value="">
+                <form action="/profile/profile_details/change_profile/"
+                  method="post">
+                  {% csrf_token %}
+                  <div class="row mb-3">
+                    <label for="fullName" class="col-sm-4 col-form-label">Full
+                      Name</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="fullName" class="form-control"
+                        id="fullName"
+                        value="{{ request.session.cid|User_Name|title }}">
+                    </div>
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="Phone"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Contact</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="phone" type="text" class="form-control"
-                      id="Phone" value=""
-                      maxlength="10">
+                  <div class="row mb-3">
+                    <label for="fatherName"
+                      class="col-sm-4 col-form-label">Father Name</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="fatherName" class="form-control"
+                        id="fatherName"
+                        value="{{ request.session.cid|User_Fname|title }}">
+                    </div>
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="Email"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Email</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="email" type="email" class="form-control"
-                      id="Email" value="">
+                  <div class="row mb-3">
+                    <label for="Gender"
+                      class="col-sm-4 col-form-label">Gender</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="gender" class="form-control"
+                        id="Gender"
+                        value="{{ request.session.cid|User_Gender|title }}">
+                    </div>
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="Address"
-                    class="col-md-4 col-lg-3 col-form-label" style="color:purple;">Address</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="address" type="text" class="form-control"
-                      id="Address" value="">
+                  <div class="row mb-3">
+                    <label for="Phone"
+                      class="col-sm-4 col-form-label">Contact</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="phone" class="form-control"
+                        id="Phone" maxlength="10"
+                        value="{{ request.session.cid|User_Contact|title }}">
+                    </div>
                   </div>
-                </div>
 
-                <!-- <div class="row mb-3">
-                  <label for="Country"
-                    class="col-md-4 col-lg-3 col-form-label text-warning">Country</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="country" type="text" class="form-control"
-                      id="Country" value="India">
+                  <div class="row mb-3">
+                    <label for="Address"
+                      class="col-sm-4 col-form-label">Address</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="address" class="form-control"
+                        id="Address"
+                        value="{{ request.session.cid|User_Address|title }}">
+                    </div>
                   </div>
-                </div> -->
-
-                <div class="text-center">
-                  <button type="submit" class="btn text-white" style="background-color:navy;">Save
-                    Changes</button>
-                </div>
-
-              </form>
-              <!-- End Profile Edit Form -->
-
-            </div>
-
-            <div class="tab-pane fade pt-3" id="profile-change-password">
-              <!-- Change Password Form -->
-              {% if messages %}
-              {% for msg in messages %}
-              <div class="alert text-center alert-{{msg.tags}}">
-                <i class="bi bi-{{msg.tags|Icon}} me-1"></i>{{msg}}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save
+                      Changes</button>
+                  </div>
+                </form>
               </div>
-              {% endfor %}
-              {% endif %}
-              <form method="post" action="/profile/profile_details/change_password/">
-                {% csrf_token %}
 
-                <div class="row mb-3">
-                  <label for="currentPassword"
-                    class="col-md-4 col-lg-3 col-form-label text-secondary fs-5">Current
-                    Password</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="currentPassword" type="password"
-                      class="form-control" id="currentPassword">
+              <!-- Change Password Tab -->
+              <div class="tab-pane fade" id="profile-change-password">
+                <!-- Message Display -->
+                <div id="message-container"></div>
+                <form id="change-password-form" method="post"
+                  action="/profile/profile_details/change_password/">
+                  {% csrf_token %}
+                  <div class="row mb-3">
+                    <label for="currentPassword"
+                      class="col-sm-4 col-form-label">Current Password</label>
+                    <div class="col-sm-8">
+                      <input type="password" name="currentPassword"
+                        class="form-control" id="currentPassword">
+                    </div>
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="newPassword"
-                    class="col-md-4 col-lg-3 col-form-label text-secondary fs-5">New
-                    Password</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="newPassword" type="password"
-                      class="form-control" id="newPassword">
+                  <div class="row mb-3">
+                    <label for="newPassword" class="col-sm-4 col-form-label">New
+                      Password</label>
+                    <div class="col-sm-8">
+                      <input type="password" name="newPassword"
+                        class="form-control" id="newPassword">
+                    </div>
                   </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="renewPassword"
-                    class="col-md-4 col-lg-3 col-form-label text-secondary fs-5">Re-enter
-                    New Password</label>
-                  <div class="col-md-8 col-lg-9">
-                    <input name="renewPassword" type="password"
-                      class="form-control" id="renewPassword">
+                  <div class="row mb-3">
+                    <label for="renewPassword"
+                      class="col-sm-4 col-form-label">Re-enter New
+                      Password</label>
+                    <div class="col-sm-8">
+                      <input type="password" name="renewPassword"
+                        class="form-control" id="renewPassword">
+                    </div>
                   </div>
-                </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Change
+                      Password</button>
+                  </div>
+                </form>
 
-                <div class="text-center">
-                  <button type="submit" class="btn text-white" style="background-color: navy;">Change
-                    Password</button>
-                </div>
-              </form><!-- End Change Password Form -->
+              </div>
 
-            </div>
-
-          </div><!-- End Bordered Tabs -->
-
+            </div><!-- End Tab Content -->
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
+
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#change-password-form').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            var formData = $(this).serialize(); // Serialize form data
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Clear previous messages
+                    $('#message-container').empty();
+                    // Append the success message to the message container
+                    $('#message-container').append('<div class="alert alert-success text-center">' + response.message + '</div>');
+                    // Optionally, reset the form fields after a successful password change
+                    $('#change-password-form')[0].reset();
+                },
+                error: function (xhr) {
+                    // Clear previous messages
+                    $('#message-container').empty();
+                    // Append the error message to the message container
+                    $('#message-container').append('<div class="alert alert-danger text-center">' + xhr.responseJSON.message + '</div>');
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock page %}

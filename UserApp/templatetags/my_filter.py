@@ -1,5 +1,6 @@
 from django import template
 from UserApp.models import Customer
+from UserApp.models import Profile
 from AdminApp.models import Product
 from AdminApp.models import Category
 register=template.Library()
@@ -122,14 +123,49 @@ def CustPhone(cid):
 
 @register.filter
 def CustEmail(cid):
-    cobj=Customer.objects.get(id=cid)
+    cobj=Customer.objects.get(id = cid)
     return cobj.email
 
 @register.filter
-def CustFname(cid):
-    cobj=Customer.objects.get(id=cid)
-    return cobj.fname
+def User_Address(cid):
+    try:
+        cobj = Profile.objects.get(reference = cid)
+        return cobj.address
+    except:
+        return ''
+    
+@register.filter
+def User_Fname(cid):
+    try:
+        cobj = Profile.objects.get(reference = cid)
+        return cobj.fname
+    except:
+        return ''
 
+@register.filter
+def User_Gender(cid):
+    try:
+        cobj = Profile.objects.get(reference = cid)
+        return cobj.gender
+    except:
+        return ''
+    
+@register.filter
+def User_Contact(cid):
+    try:
+        cobj = Profile.objects.get(reference = cid)
+        return cobj.phone
+    except:
+        return ''
+
+@register.filter
+def User_Image(id):
+    try:
+        pobj = Profile.objects.get(reference = id)
+        return pobj.image.url
+    except:
+        return ''
+    
 @register.filter
 def CustAdd(cid):
     cobj=Customer.objects.get(id=cid)
@@ -151,10 +187,14 @@ def GenderCheck(cid):
 def UserImage(cid):
     return cid.image.url
 
+
 @register.filter
-def Cust(cid):
-    cobj=Customer.objects.get(id=cid)
-    return cobj.name
+def User_Name(cid):
+    try:
+        cobj = Profile.objects.get(reference = cid)
+        return cobj.name
+    except:
+        return ''
 
 @register.filter
 def CatName(cname,prodname):

@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
+    # other middleware...
 ]
 
 ROOT_URLCONF = 'CMS_Website_Project.urls'
@@ -122,6 +124,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For collecting static files
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS=[
     BASE_DIR/'static'
@@ -141,3 +146,7 @@ EMAIL_USE_TLS=True
 EMAIL_PORT=587
 EMAIL_HOST_USER="mukeshsharmazm90@gmail.com"
 EMAIL_HOST_PASSWORD="unva fohl bkyg wasn"
+
+
+import django_heroku
+django_heroku.settings(locals())
