@@ -75,31 +75,53 @@
         .image-container {
           overflow: hidden;
         }
-      
-      .card-img {
-          transition: transform 0.5s ease;
-          width: 100%;
-          height: 40vh;
-          object-fit: cover;
+        
+        .card-img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 40vh;
+            object-fit: cover;
+        }
+        
+        .image-container:hover .card-img {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        .swal-wide {
+          width: 60% !important; /* Adjust the width as per your design */
+          max-width: 600px;
+        }
+        
+        .custom-confirm-button {
+            background-color: #28a745; /* Custom color for confirm button */
+            color: white;
+        }
+
+    @media (max-width: 768px) {
+      .header .navbar-nav {
+          margin-top: 10px;
       }
-      
-      .image-container:hover .card-img {
-          transform: scale(1.1);
-          cursor: pointer;
+
+      .header .navbar-toggler {
+          border: none;
       }
-  
-      .swal-wide {
-        width: 60% !important; /* Adjust the width as per your design */
-        max-width: 600px;
+
+      .header .btn, .header .nav-link {
+          margin-left: 5px;
+      }
+    }
+
+    .showCategory{
+      display: block;
+    }
+
+    .hideNavbar{
+      display: none;
     }
     
-    .custom-confirm-button {
-        background-color: #28a745; /* Custom color for confirm button */
-        color: white;
-    }
-    
       
-      </style>
+    </style>
 
     <script>
         function redirectToPage() {
@@ -127,9 +149,9 @@
         }
 
     </script>
+
     <script type="text/javascript">
-    
-  
+
       $(document).on('click', "#decrement", function(e) {
         e.preventDefault();
     
@@ -160,7 +182,6 @@
           $("#actual_item").text(remainQty);
           $("#stored_item").text(val);
     });
-    
   
       $(document).on('click', "#increment", function(e) {
       e.preventDefault();
@@ -242,7 +263,7 @@
                            let url  =   '/customeradd/?id=' + id + '&qty='+newQty;
                            console.log("success")
                            //console.log(url);
-                           
+                           window.location.href = url;
                         }
                     });
                 }
@@ -254,125 +275,14 @@
     });
     
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-/* Base Styles */
-.custom-header {
-  background-color: #f8f8f8;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.custom-container {
-  width: 100%;
-  padding: 0 15px;
-  margin: 0 auto;
-}
-
-.logo-text {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.navbar-toggler {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Navigation Styles */
-.navigation {
-  display: flex;
-  flex-direction: row;
-}
-
-.nav-link {
-  color: #333;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.dropdown-menu {
-  min-width: 200px;
-}
-
-.cart-button {
-  padding: 5px 15px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  font-weight: 500;
-}
-
-.cart-count {
-  font-weight: bold;
-  color: #fff;
-}
-
-.profile-link,
-.logout-link {
-  color: #333;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* Responsive Styles */
-@media (max-width: 991px) {
-  .navbar-toggler {
-      display: block;
-  }
-
-  .navigation {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-  }
-
-  .navigation.show {
-      display: flex;
-  }
-
-  .header-content {
-      flex-direction: column;
-      align-items: flex-start;
-  }
-
-  .logo-section {
-      margin-bottom: 10px;
-  }
-
-  .action-buttons {
-      flex-direction: column;
-      gap: 10px;
-  }
-
-  .custom-header {
-      padding: 10px;
-  }
-}
-
-@media (max-width: 992px) {
-  .navbar-nav {
-      flex-direction: column;
-      align-items: flex-start;
-  }
-  
-  .navbar-nav .dropdown-menu {
-      position: static;
-      float: none;
-  }
-}
-
-
-</style>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
   </head>
-
+  
   <body>
     <!-- ======= Header ======= -->
 
@@ -408,20 +318,17 @@
               <nav
                 class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center gap-4">
                 <!-- Category Dropdown -->
-                <div class="dropdown nav-item">
-                  <a class="nav-link dropdown-toggle" href="#" role="button"
-                    id="createDropdown" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    style="color: #333; font-size: 1rem; font-weight: 500;"
-                    onclick="myCategory();">
-                    Category
-                  </a>
+                <div class="dropdown nav-item" id="category-btn">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown">
+                    Filter Category
+                  </button>
                   <ul class="dropdown-menu" aria-labelledby="createDropdown"
-                    id="myDropdown">
+                    id="myCategory">
 
                     {% for cat in category %}
                     <li>
-                      <form id="myForm" action="{% url 'userfilter' %}" method="post">
+                      <form id="myForm" action="{% url 'userfilter' %}"
+                        method="post">
                         {% csrf_token %}
                         <input type="hidden" value="{{cat.id}}" name="id">
                         <button type="submit"
@@ -433,14 +340,10 @@
                 </div>
 
                 <!-- Price Dropdown -->
-                <div class="dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button"
-                    id="watchDropdown" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    style="color: #333; font-size: 1rem; font-weight: 500;"
-                    onclick="myPrice();">
-                    Price
-                  </a>
+                <div class="dropdown" id="price-btn">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown">
+                    Filter Price
+                  </button>
                   <ul class="dropdown-menu" aria-labelledby="watchDropdown"
                     id="myPrice">
                     {% if pri %}
@@ -476,7 +379,7 @@
                 </div>
 
                 <!-- Company Dropdown -->
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button"
                     id="demandDropdown" data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -493,7 +396,7 @@
                     <li><a class="dropdown-item" href="#">Exclusive
                         Content</a></li>
                   </ul>
-                </div>
+                </div> -->
               </nav>
             </div>
           </div>
@@ -511,9 +414,11 @@
               {% endif %}
             </div>
           </a>
-          <a href="{% url 'details' %}" class="nav-link d-flex align-items-center"
+          <a href="{% url 'details' %}"
+            class="nav-link d-flex align-items-center"
             style="color: #333; font-size: 1rem; font-weight: 500;">
-            <img src="{{request.session.cid|User_Image}}" style="border-radius: 50%; height:50px; width:50px" alt="user">
+            <img src="{{request.session.cid|User_Image}}"
+              style="border-radius: 50%; height:50px; width:50px" alt="user">
             <span>Profile</span>
           </a>
           <a href="/logout/" class="nav-link"
@@ -601,7 +506,8 @@
 
         </button>
 
-      </div><!-- End Slides with captions -->
+      </div>
+      <!-- End Slides with captions -->
 
       <section class="section">
         <div class="row align-items-top d-flex justify-content-around">
@@ -640,11 +546,13 @@
                   </button>
                 </form>
                 {% endif %}
-                
-                  <a href="#"
+                <form action method="post">
+                  {% csrf_token %}
+                  <button id="buynow" data-id="{{p.id}}"
                     class="btn btn-outline-secondary w-100">
                     View Details
                   </button>
+                </form>
                 <!-- </form> -->
               </div>
             </div>
@@ -654,6 +562,45 @@
       </section>
       {% endblock page %}
     </main><!-- End #main -->
+
+    <script>    
+      document.addEventListener('DOMContentLoaded', function () {
+        let categoryDropdown = document.getElementById("categoryDropdown");
+        let filterDropdown = document.getElementById("filterDropdown");
+    
+        categoryDropdown.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent the window click event from firing
+            if(document.querySelector("#myPrice").classList.contains('showCategory')){
+              document.querySelector("#myPrice").classList.remove('showCategory');
+            }
+            var categorylist1 = document.querySelector("#myCategory").classList;
+            categorylist1.toggle('showCategory');
+        });
+    
+        filterDropdown.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if(document.querySelector("#myCategory").classList.contains('showCategory')){
+              document.querySelector("#myCategory").classList.remove('showCategory');
+            }
+            var filterlist1 = document.querySelector("#myPrice").classList;
+            filterlist1.toggle('showCategory');
+        });
+    
+        window.addEventListener('click', function (event) {
+            if (!event.target.closest('#categoryDropdown') && document.querySelector("#myCategory").classList.contains('showCategory')) {
+                document.querySelector("#myCategory").classList.remove('showCategory');
+            }
+    
+            else if (!event.target.closest('#filterDropdown') && document.querySelector("#myPrice").classList.contains('showCategory')) {
+                document.querySelector("#myPrice").classList.remove('showCategory');
+            }
+        });
+    });
+    
+  </script>
+
 
     <!-- ======= Footer ======= -->
     <!-- Footer content can be added here -->

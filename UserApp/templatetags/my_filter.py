@@ -104,10 +104,11 @@ def Button(button,product):
         return False
     
 @register.filter
-def Image(cid):
+def Image(image):
     try:
-        cobj=Customer.objects.get(id=cid)
-        return cobj.image.url
+        # cobj = Customer.objects.get(id = cid)
+        # return cobj.image.url
+        return f'/media/{image}'
     except:
         return 0
 
@@ -185,7 +186,10 @@ def GenderCheck(cid):
 
 @register.filter
 def UserImage(cid):
-    return cid.image.url
+    if cid['id'] == cid['reference_id']:
+        return f'/media/{cid['image']}'
+    else:
+        return False
 
 
 @register.filter

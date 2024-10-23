@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Category,Product
-from UserApp.models import Customer
+from UserApp.models import Customer,Profile
 from django.http import HttpResponseRedirect,HttpResponse
 from django.views import View
 from django.contrib import messages
@@ -128,9 +128,24 @@ class Viewcustomer_view(View):
         adm=request.session.get('aduname')
         if not adm:
             return redirect('/admin/')
-        val=Customer.objects.all()
-        data={'val':val}
-        return render(request,"adminsite/viewcustomer.html",data)    
+        cust = Customer.objects.all().values('name','id')
+        profile = Profile.objects.all().values('image','reference_id')
+        # custid = Customer.objects.all().values()
+        # profileid = Profile.objects.all().values()
+        # print(list(cust))
+        # print(list(profile))
+        dict=[]
+        for d in cust:
+            for pro in profile:
+                # if d['id'] == pro['reference_id']:
+                d.update(pro)
+            dict.append(d)
+        # print(dict)
+        # print(cust)
+        # print(profile)
+        data={'val':dict}
+        return render(request,"adminsite/viewcustomer.html",data)
+        # return HttpResponse("say hii")    
 
 class Edit_product_view(View):    
     def post(self,request,pid):
@@ -171,8 +186,33 @@ class Product_view(View):
 
 class Customerprofile_view(View):
     def get(self,request,cid):
-        cust=Customer.objects.get(id=cid)
-        return render(request,"adminsite/profile.html",{'cust':cust})
+        try:
+            customer = Customer.objects.get(id = cid)
+            profile = Profile.objects.get(reference = cid)
+            # print(profile,type(profile))
+            # print(profile.id)
+            data = {
+                'id': customer.id,
+                'image': profile.image,
+                'name': profile.name,
+                'fname': profile.fname,
+                'address': profile.address,
+                'email': customer.email
+            }
+            # print(data)
+        except Exception as msg:
+            data = {
+                'id': customer.id,
+                'image': '',
+                'name': customer.name,
+                'fname': '',
+                'address': '',
+                'email': customer.email
+            }
+            print(msg)
+            # return HttpResponse("something error found")
+        finally:
+            return render(request, "adminsite/profile.html", data)
     def post(self,request,cid):
         n=request.POST.get('fullName')
         add=request.POST.get('address')

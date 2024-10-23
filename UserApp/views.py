@@ -138,7 +138,7 @@ class Signup_view(View):
             request.session['newemail'] = email
             from_email = settings.EMAIL_HOST_USER
             recipient_list = [email]
-            # send_mail(subject, message, from_email, recipient_list)
+            send_mail(subject, message, from_email, recipient_list)
             # cobj = Customer(
             #     name = username,
             #     email = email,
@@ -169,7 +169,7 @@ class NewUser_verify_otp_view(View):
                 from_email = settings.EMAIL_HOST_USER
                 recipient_list = [newemail]
                 
-                # send_mail(subject, message, from_email, recipient_list)
+                send_mail(subject, message, from_email, recipient_list)
                 cobj = Customer(
                     name = username,
                     email = newemail,
