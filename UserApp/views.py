@@ -50,6 +50,14 @@ def add(request):
         request.session['index'] = index
     return HttpResponseRedirect("/")
 
+def viewaddproductindex(request):
+    if request.method=="GET":
+        id = request.GET.get('id')
+        qty = request.GET.get('qty')
+        index = request.session.get('index',{})
+        index[id] = qty
+        request.session['index'] = index
+    return HttpResponseRedirect(f"/viewproduct/?product_Id={id}")
 # from django.http import HttpResponseRedirect
 
 def customeradd(request):
@@ -57,18 +65,24 @@ def customeradd(request):
         # Fetch 'id' and 'qty' from GET parameters
         product_id = request.GET.get('id')
         qty = request.GET.get('qty')
-
-        # print("Product ID:", product_id)
-        # print("Quantity:", qty)
-
         # Handle session cart
         pcart = request.session.get('pcart', {})
-
         # Store quantity in the session cart using the product ID as key
         pcart[product_id] = qty
         request.session['pcart'] = pcart
-
         return HttpResponseRedirect("/profile/")
+    
+def viewaddproduct(request):
+    if request.method == "GET":
+        # Fetch 'id' and 'qty' from GET parameters
+        product_id = request.GET.get('id')
+        qty = request.GET.get('qty')
+        # Handle session cart
+        pcart = request.session.get('pcart', {})
+        # Store quantity in the session cart using the product ID as key
+        pcart[product_id] = qty
+        request.session['pcart'] = pcart
+        return HttpResponseRedirect(f"/profile/viewproduct/?product_Id={product_id}")
     
 def update_customeradd(request):
     if request.method == "GET":
@@ -508,19 +522,21 @@ class PriceFilter_view(View):
 class Add_to_cart_view(View):
     def post(self,request):
         addcart_id=request.POST.get('pid')
+        print(addcart_id)
         if addcart_id:
             data=self.add_in_cart(request,addcart_id)
         # data=addcart_id
-        val=request.session.get('cat1')
-        price1=request.session.get('price1')
-        if val:
-            if price1:
-                return JsonResponse({'redirect_url': f'/price/{price1}/','data':data})
-            return JsonResponse({'redirect_url': f'/filter/{str(val)}/','data':data})
-        else:
-            if price1:
-                return JsonResponse({'redirect_url': f'/price/{price1}/','data':data})
-            return JsonResponse({'redirect_url': '/','data':data})    
+        return JsonResponse({'data': data})
+        # val=request.session.get('cat1')
+        # price1=request.session.get('price1')
+        # if val:
+        #     if price1:
+        #         return JsonResponse({'redirect_url': f'/price/{price1}/','data':data})
+        #     return JsonResponse({'redirect_url': f'/filter/{str(val)}/','data':data})
+        # else:
+        #     if price1:
+        #         return JsonResponse({'redirect_url': f'/price/{price1}/','data':data})
+        #     return JsonResponse({'redirect_url': '/','data':data})    
     def add_in_cart(self,request,product_id):
         index=request.session.get('index',{})
         index[product_id]=1
@@ -1117,3 +1133,69 @@ class Changepwd_view(View):
         return JsonResponse({"message": "Successfully Changed"}, status=200)    
 
     
+class ViewProduct_view(View):
+    def get(self,request):
+        product_id = request.GET.get('product_Id')
+        product = Product.objects.get(id = int(product_id))
+        comment = Comments.objects.filter(comment_reference = product_id).values('owner_of_comment', 'message', 'review')
+        list1 = []
+        for r1 in list(comment):
+            dict2 =  {}
+            # print(r1)
+            for r2 in range(int(r1['review'])):
+                dict2.update({str(r2): r2})
+            r1['review'] = dict2
+            list1.append(r1)
+        # print(list1)
+        return render(request,"usersite/viewproduct.html",{'product': product, 'comment': list1})
+
+class Customer_viewProduct_view(View):
+    def get(self,request):
+        product_id = request.GET.get('product_Id')
+        product = Product.objects.get(id = int(product_id))
+        comment = Comments.objects.filter(comment_reference = product_id).values('owner_of_comment', 'message', 'review')
+        # print(f'Filtered Dataset : {comment}')
+        list1 = []
+        for r1 in list(comment):
+            dict2 =  {}
+            # print(r1)
+            for r2 in range(int(r1['review'])):
+                dict2.update({str(r2): r2})
+            r1['review'] = dict2
+            list1.append(r1)
+        # print(list1)
+        return render(request,"usersite/customerviewproduct.html",{'product': product, 'comment': list1})
+        # return HttpResponse("comments!!!")
+        
+from AdminApp.models import Comments
+
+class Comment_view(View):
+    def post(self, request):
+        try:
+            pkey = request.POST.get('pkey')
+            message = request.POST.get('message')
+            rate = request.POST.get('rate')
+            productId = request.POST.get('productId')
+
+            if not (pkey and message and rate):
+                return JsonResponse({'failed': True, 'message': 'Missing data. Please provide all required fields.'}, status=400)
+
+            # print(f'{pkey} - {message} - {rate} - {productId}')
+            ref = Product.objects.get(id = productId)
+            obj = Comments(message=message, review=rate, owner_of_comment=pkey, comment_reference=ref)
+            obj.save()
+            comment = Comments.objects.filter(comment_reference = productId).values('owner_of_comment', 'message', 'review')
+            list1 = []
+            for r1 in list(comment):
+                dict2 =  {}
+                # print(r1)
+                for r2 in range(int(r1['review'])):
+                    dict2.update({str(r2): r2})
+                r1['review'] = dict2
+                list1.append(r1)
+            return JsonResponse({'success': True, 'message': 'Review submitted successfully', 'comment': list1}, status=200)
+        
+        except Exception as e:
+            return JsonResponse({'failed': True, 'message': 'An error occurred: ' + str(e)}, status=500)
+
+            

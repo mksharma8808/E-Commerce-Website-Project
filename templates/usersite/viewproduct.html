@@ -1,0 +1,323 @@
+{% extends "usersite/index.html" %}
+{% load my_filter %}
+{% load static %}
+
+{% block page %}
+
+<div class="container mt-5">
+    <!-- Product Section -->
+    <div class="row">
+        <!-- Product Image Carousel -->
+        <div class="col-lg-7 col-md-6 col-sm-12 mb-4">
+            <!-- <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="" class="d-block w-100" alt="Product Image 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="" class="d-block w-100" alt="Product Image 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="" class="d-block w-100" alt="Product Image 3">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div> -->
+            <div class="carousel-item active">
+                <img src="{{product.image.url}}" class="d-block" style="max-height:100vh;" alt="Product Image 1">
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <h2 class="product-title">{{product.name|title}}</h2>
+            <p class="product-price">{{product.price|Currency}}</p>
+
+            <!-- Star Rating -->
+            <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="review-count">(45 reviews)</span>
+            </div>
+
+            <!-- Product Description -->
+            <p class="product-description mt-4">
+                {{product.des|title}}.....<br>
+                This is a detailed description of the product. 
+            </p>
+
+            <!-- Add to Cart Button -->
+            <div class="d-flex justify-content-start align-items-center">
+                {% if request.session.index|Button:product %}
+                <a href="/viewcart/">
+                  <button class="btn btn-success add-to-cart-btn me-3">Go to Cart </button>
+                </a>
+                {% else %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-success add-to-cart-btn me-3" id="viewproductaddtocartindex" data-id="{{product.id}}">Add to Cart</button>
+                </form>
+                {% endif %}
+                <button class="btn btn-outline-secondary">Add to Wishlist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews and Comments Section -->
+    <div class="row mt-5">
+        <div class="col-lg-12">
+            <h4>Customer Reviews</h4>
+            <div class="review">
+                {% for cmt in comment %}
+                <p class="user-review"><strong>{{cmt.owner_of_comment|ProfileNameFetch|title}}:</strong> {{cmt.message|title}}</p>
+                <div class="rating">
+                    {% for r in cmt.review %}
+                        <span class="fa fa-star checked"></span>        
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Leave a Review Section -->
+            <h5 class="mt-4">Rate This Product:</h5>
+            <div class="star-rating">
+                <i class="fas fa-star" data-value="1"></i>
+                <i class="fas fa-star" data-value="2"></i>
+                <i class="fas fa-star" data-value="3"></i>
+                <i class="fas fa-star" data-value="4"></i>
+                <i class="fas fa-star" data-value="5"></i>
+            </div>
+            
+            <!-- Comment Box -->
+            <h5 class="mt-4">Comment Here:</h5>
+            <textarea class="form-control" rows="3" placeholder="Write your comment here for product..." id="comment-message"></textarea>
+            <button class="btn btn-success mt-2" id="submit-comment">Submit Comment</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .product-price {
+        font-size: 1.5rem;
+        color: #ff4c60;
+    }
+    
+    .rating .fa-star {
+        color: #ffbc00;
+        margin-right: 5px;
+    }
+    
+    .rating .fa-star.checked {
+        color: #ff9800;
+    }
+    
+    .review-count {
+        font-size: 0.9rem;
+        color: #777;
+    }
+    
+    .add-to-cart-btn {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .review {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+    }
+    
+    .user-review {
+        font-size: 1rem;
+        color: #444;
+    }
+
+    .star-rating {
+        display: inline-block;
+    }
+    
+    .star-rating .fa-star {
+        font-size: 2rem;
+        color: #ddd; /* Default grey color */
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    
+    .star-rating .fa-star:hover,
+    .star-rating .fa-star:hover ~ .fa-star {
+        color: #ff9800; /* Hover color */
+    }
+    
+    .star-rating .fa-star.active {
+        color: #ffbc00; /* Active color */
+    }
+    
+</style>
+
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+    var rate;
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star-rating .fa-star');
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                stars.forEach(s => s.classList.remove('active'));
+                for (let i = 0; i <= index; i++) {
+                    stars[i].classList.add('active');
+                }
+                // Optional: store the rating value
+                console.log('Rating selected: ', index + 1);
+                rate = index + 1;
+            });
+        });
+    });
+
+    document.getElementById("submit-comment").addEventListener('click', function () {
+        alert("Please login the website.....");
+    });
+  
+    $(document).on('click', "#index_decr", function(e) {
+        e.preventDefault();
+    
+        // Fetch the data-id and data-qty attributes from the clicked element
+        let val = parseInt($('#stored_item').text());
+        let productQty = parseInt($(this).data('qty')); // Use data-qty instead of data-product
+        let remainQty = parseInt($('#actual_item').text());
+    
+        //console.log("Product ID:", val); // Log the product ID
+        //console.log("Product Quantity:", productQty); // Log the product quantity
+    
+        if (val > 1) {
+            // Increment the remaining quantity displayed
+            remainQty = remainQty + 1;
+            
+            // Decrement the product quantity
+            val = val - 1;
+            
+            // Update the data-id attribute with the new value
+            $(this).data('id', val);
+            
+            // Update the span text with the decremented value
+            
+            //console.log("Updated Product Quantity:", val); // Log the updated product quantity
+          } else {
+            alert("Request failed!! Quantity must be at least 1");
+          }
+          $("#actual_item").text(remainQty);
+          $("#stored_item").text(val);
+    });
+    
+    $(document).on('click', "#index_incr", function(e) {
+        e.preventDefault();
+        let val = parseInt($('#stored_item').text());
+        let product_qty = $('#actual_item').text();
+        if(parseInt(product_qty) > 0){
+        qty = parseInt(product_qty);
+        qty = qty - 1;
+        val = val + 1;
+        // Update the data-id attribute with the new value
+        $(this).data('id', val);
+        // Update the span text with the incremented value
+        // console.log(val);
+        } else {
+        alert("Request failed!! Quantity Empty")
+        }
+        $("#actual_item").text(qty);
+        $("#stored_item").text(val);
+    });
+
+    $(document).on('click', '#viewproductaddtocartindex', function(e) {
+        e.preventDefault();
+        let id = this.getAttribute("data-id");
+        // console.log("Product ID:", id);
+        // let id = $(this).data('id');
+        // alert(id)
+        $.ajax({
+            type: 'POST',
+            url: '{% url "addtocart" %}',
+            data: {
+                pid: id,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                if (response.data) {
+                    const product = response.data;
+                    const productString = JSON.stringify(product).replace(/"/g, '&quot;');
+                    Swal.fire({
+                        heightAuto: true,
+                        html: `
+                            <div class="d-flex justify-content-center align-items-center">
+    
+                            <div class="col-lg-8">
+                              <div class="card">
+                                  <div class="image-container">
+                                      <img src="${product.img}" class="card-img" alt="${product.name}">
+                                  </div>
+                                  <div>
+                                      <h5 class="card-title pt-0 fw-bolder">${product.name}</h5>
+                                      <p class="text-secondary ">${product.des}</p>
+                                      <p class=" fw-bolder pt-0">Quantity: <span id="actual_item">${product.qty} </span></p>
+                                      <p class="pt-0 fw-bolder">Price: ₹${product.rate}</p>
+                                      <div style="display: flex; justify-content: center; align-items: center;">
+                                          <button type="submit" style="border: none; background: white;">
+                                              <b class="bi bi-clipboard-minus fs-1 text-black" id="index_decr" data-product="${product.qty}"></b>
+                                          </button>
+                                          <span id="stored_item">${product.item} </span>&nbsp;in cart
+                                          <button type="submit" style="border: none; background: white;">
+                                              <b class="bi bi-clipboard-plus fs-1  text-black" id="index_incr" data-id="${product.item}" data-product="${productString}"></b>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        `,
+                        showCloseButton: true,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Add Product',
+                        customClass: {
+                          confirmButton: 'custom-confirm-button',
+                          popup: 'swal-wide'
+                        },
+                        showCancelButton: true,
+                        cancelButtonColor: "#000",
+                    }).then((result) => {
+                        console.log (result.isConfirmed)
+                        if (result.isConfirmed) {
+                           let newQty =  $("#stored_item").text();
+                           // console.log(newQty);
+                           let url  =   '/viewaddproductindex/?id=' + id + '&qty='+newQty;
+                           // console.log("success")
+                           // console.log(url);
+                           window.location.href = url;
+                        }
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+    
+</script>
+
+{% endblock page %}

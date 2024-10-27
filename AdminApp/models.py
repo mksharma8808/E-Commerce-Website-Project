@@ -16,4 +16,10 @@ class Product(models.Model):
     des=models.CharField(max_length=100)
     item_qty=models.IntegerField(null=True)
     # season=models.CharField(max_length=30,null=True)
-    company=models.CharField(max_length=30,null=True)
+    # company=models.CharField(max_length=30,null=True)
+    
+class Comments(models.Model):
+    message = models.CharField(max_length = 255)
+    owner_of_comment = models.CharField(max_length = 50)
+    comment_reference = models.ForeignKey(Product,on_delete=models.CASCADE)
+    review = models.CharField(max_length=10)

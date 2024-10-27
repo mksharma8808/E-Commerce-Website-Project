@@ -345,3 +345,8 @@ def Count_Item(id,index):
         return value
     except:
         return obj.item_qty 
+
+@register.filter
+def ProfileNameFetch(id):
+    pobj = Profile.objects.get(reference_id = int(id))
+    return pobj.name

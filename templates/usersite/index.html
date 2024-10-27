@@ -11,6 +11,12 @@
     <meta content name="description">
     <meta content name="keywords">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <!-- Favicons -->
     <!-- <link href="{% static 'assets/img/favicon.png' %}" rel="icon"> -->
     <!-- <link href="{% static 'assets/img/apple-touch-icon.png' %}"
@@ -39,16 +45,11 @@
       rel="stylesheet">
       <link href="{% static 'assets/vendor/simple-datatables/style.css' %}"
       rel="stylesheet">-->
-    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-
+    
     <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"> -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet">
+    
 
     <!-- <link
     href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"
@@ -60,15 +61,25 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
       rel="stylesheet"> -->
 
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
     <!-- <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script
       src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
       
@@ -120,149 +131,6 @@
     }
     
     </style>
-
-    <script>
-        function redirectToPage() {
-            var selectElement = document.getElementById('select');
-            var selectedValue = selectElement.value;
-            window.location.href = selectedValue ? selectedValue : '/profile/';
-        }
-
-        function redirectToPagePrice() {
-            var selectElement = document.getElementById('selectprice');
-            var selectedValue = selectElement.value;
-            window.location.href = selectedValue ? selectedValue : '/profile/';
-        }
-
-    </script>
-  
-    <script type="text/javascript">
-    
-      $(document).on('click', "#decrement", function(e) {
-          e.preventDefault();
-      
-          // Fetch the data-id and data-qty attributes from the clicked element
-          let val = parseInt($('#stored_item').text());
-          let productQty = parseInt($(this).data('qty')); // Use data-qty instead of data-product
-          let remainQty = parseInt($('#actual_item').text());
-      
-          //console.log("Product ID:", val); // Log the product ID
-          //console.log("Product Quantity:", productQty); // Log the product quantity
-      
-          if (val > 1) {
-              // Increment the remaining quantity displayed
-              remainQty = remainQty + 1;
-              
-              // Decrement the product quantity
-              val = val - 1;
-              
-              // Update the data-id attribute with the new value
-              $(this).data('id', val);
-              
-              // Update the span text with the decremented value
-              
-              //console.log("Updated Product Quantity:", val); // Log the updated product quantity
-            } else {
-              alert("Request failed!! Quantity must be at least 1");
-            }
-            $("#actual_item").text(remainQty);
-            $("#stored_item").text(val);
-      });
-      
-      $(document).on('click', "#increment", function(e) {
-        e.preventDefault();
-        // let val = parseInt($(this).data('id'));
-        let val = parseInt($('#stored_item').text());
-        let product_qty = $('#actual_item').text();
-        if(parseInt(product_qty) > 0){
-          qty = parseInt(product_qty);
-          qty = qty - 1;
-          val = val + 1;
-          // Update the data-id attribute with the new value
-          $(this).data('id', val);
-          // Update the span text with the incremented value
-          console.log(val);
-        } else {
-          alert("Request failed!! Quantity Empty")
-        }
-        $("#actual_item").text(qty);
-        $("#stored_item").text(val);
-      });
-
-      $(document).on('click', '#addtocart', function(e) {
-          e.preventDefault();
-          let id = $(this).data('id');
-          //alert(id)
-          $.ajax({
-              type: 'POST',
-              url: '{% url "customeraddtocart" %}',
-              data: {
-                  pid: id,
-                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-              },
-              success: function(response) {
-                  if (response.data) {
-                      const product = response.data;
-                      const productString = JSON.stringify(product).replace(/"/g, '&quot;');
-                      Swal.fire({
-                          
-                          heightAuto: true,
-                          html: `
-                              <div class="d-flex justify-content-center align-items-center">
-
-                              <div class="col-lg-8">
-                                <div class="card">
-                                    <div class="image-container">
-                                        <img src="${product.img}" class="card-img" alt="${product.name}">
-                                    </div>
-                                    <div>
-                                        <h5 class="card-title pt-0 fw-bolder">${product.name}</h5>
-                                        <p class="text-secondary ">${product.des}</p>
-                                        <p class=" fw-bolder pt-0">Quantity: <span id="actual_item">${product.qty} </span></p>
-                                        <p class="pt-0 fw-bolder">Price: ₹${product.rate}</p>
-                                        <div style="display: flex; justify-content: center; align-items: center;">
-                                            <button type="submit" style="border: none; background: white;">
-                                                <b class="bi bi-clipboard-minus fs-1 text-black" id="decrement" data-product="${product.qty}"></b>
-                                            </button>
-                                            <span id="stored_item">${product.item} </span>&nbsp;in cart
-                                            <button type="submit" style="border: none; background: white;">
-                                                <b class="bi bi-clipboard-plus fs-1  text-black" id="increment" data-id="${product.item}" data-product="${productString}"></b>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                          `,
-                          showCloseButton: true,
-                          showConfirmButton: true,
-                          confirmButtonText: 'Add Product',
-                          customClass: {
-                            confirmButton: 'custom-confirm-button',
-                            popup: 'swal-wide'
-                          },
-                          showCancelButton: true,
-                          cancelButtonColor: "#000",
-                      }).then((result) => {
-                        
-                          if (result.isConfirmed) {
-                            let newQty =  $("#stored_item").text();
-                            //console.log(newQty);
-                            let url  =   '/add/?id=' + id + '&qty='+newQty;
-
-                            //console.log(url);
-                              window.location.href = url;
-                          }
-                      });
-                  }
-              },
-              error: function(xhr, status, error) {
-                  console.log("Error: " + error);
-              }
-          });
-      });
-      
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -367,25 +235,6 @@
                   </ul>
                 </div>
 
-                <!-- Company Dropdown -->
-                <!-- <div class="dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button"
-                    id="demandDropdown" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    style="color: #333; font-size: 1rem; font-weight: 500;"
-                    onclick="myCompany();">
-                    Company
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="demandDropdown"
-                    id="myCompany">
-                    <li><a class="dropdown-item" href="#">Buy/Rent
-                        Movies</a></li>
-                    <li><a class="dropdown-item" href="#">Subscription
-                        Plans</a></li>
-                    <li><a class="dropdown-item" href="#">Exclusive
-                        Content</a></li>
-                  </ul>
-                </div> -->
               </nav>
             </div>
           </div>
@@ -403,8 +252,6 @@
               {% endif %}
             </div>
           </a>
-
-         
           <a href="/login/" class="nav-link"
             style="color: #333; font-size: 1rem; font-weight: 500;">Log in</a>
           <a href="/signup/" class="nav-link"
@@ -478,15 +325,14 @@
 
         <button class="carousel-control-prev" type="button"
           data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <!-- <span class="carousel-control-prev-icon " aria-hidden="true"></span> -->
+         
           <i class="ri-arrow-drop-left-line text-black fs-2"></i>
           <span class="text-black fs-5"
             style="background-color: none;">Previous</span>
         </button>
         <button class="carousel-control-next" type="button"
           data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
-          <!-- <span class="">Next</span> -->
+          
           <span class="text-black fs-5"
             style="background-color: none;">Next</span>
           <i class="ri-arrow-drop-right-line text-black fs-2"></i>
@@ -534,13 +380,14 @@
                   </button>
                 </form>
                 {% endif %}
-                <form action method="post">
+                <!-- <form action method="post">
                   {% csrf_token %}
                   <button id="buynow" data-id="{{p.id}}"
                     class="btn btn-outline-secondary w-100">
                     View Details
                   </button>
-                </form>
+                </form> -->
+                <a href="/viewproduct/?product_Id={{p.id}}" class="btn btn-outline-secondary ">View Details</a>
               </div>
             </div>
           </div>
@@ -549,45 +396,6 @@
       </section>
       {% endblock page %}
     </main><!-- End #main -->
-
-    <script>    
-        document.addEventListener('DOMContentLoaded', function () {
-          let categoryDropdown = document.getElementById("categoryDropdown");
-          let filterDropdown = document.getElementById("filterDropdown");
-      
-          categoryDropdown.addEventListener('click', function (event) {
-              event.preventDefault();
-              event.stopPropagation(); // Prevent the window click event from firing
-              if(document.querySelector("#myPrice").classList.contains('showCategory')){
-                document.querySelector("#myPrice").classList.remove('showCategory');
-              }
-              var categorylist1 = document.querySelector("#myCategory").classList;
-              categorylist1.toggle('showCategory');
-          });
-      
-          filterDropdown.addEventListener('click', function (event) {
-              event.preventDefault();
-              event.stopPropagation();
-              if(document.querySelector("#myCategory").classList.contains('showCategory')){
-                document.querySelector("#myCategory").classList.remove('showCategory');
-              }
-              var filterlist1 = document.querySelector("#myPrice").classList;
-              filterlist1.toggle('showCategory');
-          });
-      
-          window.addEventListener('click', function (event) {
-              if (!event.target.closest('#categoryDropdown') && document.querySelector("#myCategory").classList.contains('showCategory')) {
-                  document.querySelector("#myCategory").classList.remove('showCategory');
-              }
-      
-              else if (!event.target.closest('#filterDropdown') && document.querySelector("#myPrice").classList.contains('showCategory')) {
-                  document.querySelector("#myPrice").classList.remove('showCategory');
-              }
-          });
-      });
-      
-    </script>
-  
 
     <!-- ======= Footer ======= -->
     <!-- Footer content can be added here -->
@@ -608,4 +416,179 @@
     <script src="{% static 'assets/js/main.js' %}"></script> -->
   </body>
 
+  <script>   
+
+    function redirectToPage() {
+      var selectElement = document.getElementById('select');
+      var selectedValue = selectElement.value;
+      window.location.href = selectedValue ? selectedValue : '/profile/';
+    }
+
+    function redirectToPagePrice() {
+        var selectElement = document.getElementById('selectprice');
+        var selectedValue = selectElement.value;
+        window.location.href = selectedValue ? selectedValue : '/profile/';
+    }
+
+    $(document).on('click', "#decrement", function(e) {
+      e.preventDefault();
+  
+      // Fetch the data-id and data-qty attributes from the clicked element
+      let val = parseInt($('#stored_item').text());
+      let productQty = parseInt($(this).data('qty')); // Use data-qty instead of data-product
+      let remainQty = parseInt($('#actual_item').text());
+  
+      //console.log("Product ID:", val); // Log the product ID
+      //console.log("Product Quantity:", productQty); // Log the product quantity
+  
+      if (val > 1) {
+          // Increment the remaining quantity displayed
+          remainQty = remainQty + 1;
+          
+          // Decrement the product quantity
+          val = val - 1;
+          
+          // Update the data-id attribute with the new value
+          $(this).data('id', val);
+          
+          // Update the span text with the decremented value
+          
+          //console.log("Updated Product Quantity:", val); // Log the updated product quantity
+        } else {
+          alert("Request failed!! Quantity must be at least 1");
+        }
+        $("#actual_item").text(remainQty);
+        $("#stored_item").text(val);
+  });
+  
+    $(document).on('click', "#increment", function(e) {
+      e.preventDefault();
+      // let val = parseInt($(this).data('id'));
+      let val = parseInt($('#stored_item').text());
+      let product_qty = $('#actual_item').text();
+      if(parseInt(product_qty) > 0){
+        qty = parseInt(product_qty);
+        qty = qty - 1;
+        val = val + 1;
+        // Update the data-id attribute with the new value
+        $(this).data('id', val);
+        // Update the span text with the incremented value
+        console.log(val);
+      } else {
+        alert("Request failed!! Quantity Empty")
+      }
+      $("#actual_item").text(qty);
+      $("#stored_item").text(val);
+    });
+
+    $(document).on('click', '#addtocart', function(e) {
+        e.preventDefault();
+        let id = this.getAttribute("data-id");
+        // alert(id)
+        $.ajax({
+            type: 'POST',
+            url: '{% url "customeraddtocart" %}',
+            data: {
+                pid: id,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                if (response.data) {
+                    const product = response.data;
+                    const productString = JSON.stringify(product).replace(/"/g, '&quot;');
+                    Swal.fire({
+                        
+                        heightAuto: true,
+                        html: `
+                            <div class="d-flex justify-content-center align-items-center">
+
+                            <div class="col-lg-8">
+                              <div class="card">
+                                  <div class="image-container">
+                                      <img src="${product.img}" class="card-img" alt="${product.name}">
+                                  </div>
+                                  <div>
+                                      <h5 class="card-title pt-0 fw-bolder">${product.name}</h5>
+                                      <p class="text-secondary ">${product.des}</p>
+                                      <p class=" fw-bolder pt-0">Quantity: <span id="actual_item">${product.qty} </span></p>
+                                      <p class="pt-0 fw-bolder">Price: ₹${product.rate}</p>
+                                      <div style="display: flex; justify-content: center; align-items: center;">
+                                          <button type="submit" style="border: none; background: white;">
+                                              <b class="bi bi-clipboard-minus fs-1 text-black" id="decrement" data-product="${product.qty}"></b>
+                                          </button>
+                                          <span id="stored_item">${product.item} </span>&nbsp;in cart
+                                          <button type="submit" style="border: none; background: white;">
+                                              <b class="bi bi-clipboard-plus fs-1  text-black" id="increment" data-id="${product.item}" data-product="${productString}"></b>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        `,
+                        showCloseButton: true,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Add Product',
+                        customClass: {
+                          confirmButton: 'custom-confirm-button',
+                          popup: 'swal-wide'
+                        },
+                        showCancelButton: true,
+                        cancelButtonColor: "#000",
+                    }).then((result) => {
+                        console.log(result.isConfirmed);
+
+                        if (result.isConfirmed) {
+                          let newQty =  $("#stored_item").text();
+                          //console.log(newQty);
+                          let url  =   '/add/?id=' + id + '&qty='+newQty;
+
+                          //console.log(url);
+                            window.location.href = url;
+                        }
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      let categoryDropdown = document.getElementById("categoryDropdown");
+      let filterDropdown = document.getElementById("filterDropdown");
+  
+      categoryDropdown.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation(); // Prevent the window click event from firing
+          if(document.querySelector("#myPrice").classList.contains('showCategory')){
+            document.querySelector("#myPrice").classList.remove('showCategory');
+          }
+          var categorylist1 = document.querySelector("#myCategory").classList;
+          categorylist1.toggle('showCategory');
+      });
+  
+      filterDropdown.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          if(document.querySelector("#myCategory").classList.contains('showCategory')){
+            document.querySelector("#myCategory").classList.remove('showCategory');
+          }
+          var filterlist1 = document.querySelector("#myPrice").classList;
+          filterlist1.toggle('showCategory');
+      });
+  
+      window.addEventListener('click', function (event) {
+          if (!event.target.closest('#categoryDropdown') && document.querySelector("#myCategory").classList.contains('showCategory')) {
+              document.querySelector("#myCategory").classList.remove('showCategory');
+          }
+  
+          else if (!event.target.closest('#filterDropdown') && document.querySelector("#myPrice").classList.contains('showCategory')) {
+              document.querySelector("#myPrice").classList.remove('showCategory');
+          }
+      });
+  });
+  
+  </script>
 </html>
